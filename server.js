@@ -6,8 +6,10 @@ import "dotenv/config";
 import express from "express";
 import path from "node:path";
 import fs from "node:fs";
+import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
 import nodemailer from "nodemailer";
+import multer from "multer";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 3000;
@@ -214,6 +216,124 @@ app.post("/api/contact", async (req, res) => {
     console.error("[/api/contact] crash:", e);
     res.status(500).json({ error: "server error" });
   }
+});
+
+// ---- /api/apply — job applications --------------------------------------
+// Stores submissions in data/applications.jsonl (parallel to inquiries.jsonl)
+// Saves uploaded resume to data/resumes/{ts}-{rand}-{originalname}
+// Emails CONTACT_TO with the resume attached (if SMTP configured)
+const RESUME_DIR = path.join(DATA_DIR, "resumes");
+if (!fs.existsSync(RESUME_DIR)) fs.mkdirSync(RESUME_DIR, { recursive: true });
+const APP_LOG = path.join(DATA_DIR, "applications.jsonl");
+
+const ALLOWED_RESUME_EXT = new Set([
+  ".pdf", ".doc", ".docx", ".rtf", ".txt", ".md", ".pages", ".odt",
+]);
+
+const resumeStorage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, RESUME_DIR),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname || "").toLowerCase();
+    const stem = path.basename(file.originalname || "resume", ext)
+      .replace(/[^\w.\-一-龥]+/g, "_")   // sanitize, keep CJK
+      .slice(0, 80);
+    const ts = new Date().toISOString().replace(/[:.]/g, "-");
+    const rnd = crypto.randomBytes(4).toString("hex");
+    cb(null, `${ts}-${rnd}-${stem}${ext}`);
+  },
+});
+const uploadResume = multer({
+  storage: resumeStorage,
+  limits: { fileSize: 10 * 1024 * 1024, files: 1 },   // 10 MB max, 1 file
+  fileFilter: (req, file, cb) => {
+    const ext = path.extname(file.originalname || "").toLowerCase();
+    if (ALLOWED_RESUME_EXT.has(ext)) return cb(null, true);
+    cb(new Error("RESUME_EXT_REJECTED"));
+  },
+});
+
+app.post("/api/apply", (req, res) => {
+  uploadResume.single("resume")(req, res, async (err) => {
+    if (err) {
+      const code = err.code === "LIMIT_FILE_SIZE" ? "FILE_TOO_LARGE"
+                 : err.message === "RESUME_EXT_REJECTED" ? "FILE_TYPE_REJECTED"
+                 : "UPLOAD_ERROR";
+      return res.status(400).json({ error: code });
+    }
+    try {
+      const { name, email, phone, github, jobId, jobTitle, message } = req.body || {};
+
+      if (!safe(name, 200) || !isEmail(email)) {
+        if (req.file) { try { fs.unlinkSync(req.file.path); } catch {} }
+        return res.status(400).json({ error: "name and email required" });
+      }
+
+      const entry = {
+        ts: new Date().toISOString(),
+        jobId:    safe(jobId, 50),
+        jobTitle: safe(jobTitle, 200),
+        name:     safe(name, 200),
+        email:    safe(email, 320),
+        phone:    safe(phone, 50),
+        github:   safe(github, 300),
+        message:  safe(message, 5000),
+        resume: req.file ? {
+          filename: req.file.filename,
+          original: req.file.originalname,
+          size:     req.file.size,
+          mimetype: req.file.mimetype,
+        } : null,
+        ip: req.headers["x-forwarded-for"] || req.socket.remoteAddress || "",
+        ua: safe(req.headers["user-agent"] || "", 300),
+      };
+
+      fs.appendFileSync(APP_LOG, JSON.stringify(entry) + "\n");
+
+      if (mailer) {
+        const subj = `[LingQi 求职] ${entry.jobTitle || "general"} — ${entry.name}`;
+        const text = [
+          `New application from the LingQi careers page`,
+          ``,
+          `Time:      ${entry.ts}`,
+          `Position:  ${entry.jobTitle}  (${entry.jobId})`,
+          `Name:      ${entry.name}`,
+          `Email:     ${entry.email}`,
+          `Phone:     ${entry.phone}`,
+          `GitHub:    ${entry.github}`,
+          `Resume:    ${entry.resume ? `${entry.resume.original} (${entry.resume.size} bytes)` : "(not attached)"}`,
+          `IP/UA:     ${entry.ip}  ·  ${entry.ua}`,
+          ``,
+          `Message:`,
+          entry.message || "(none)",
+        ].join("\n");
+        const mailOpts = {
+          from: CONTACT_FROM,
+          to: CONTACT_TO,
+          replyTo: entry.email,
+          subject: subj,
+          text,
+        };
+        if (req.file) {
+          mailOpts.attachments = [{
+            filename: req.file.originalname,
+            path: req.file.path,
+            contentType: req.file.mimetype,
+          }];
+        }
+        try {
+          await mailer.sendMail(mailOpts);
+        } catch (e) {
+          console.error("[mail] application send failed:", e.message);
+          // don't bubble up — application is logged + resume saved on disk
+        }
+      }
+
+      res.json({ ok: true });
+    } catch (e) {
+      console.error("[/api/apply] crash:", e);
+      res.status(500).json({ error: "server error" });
+    }
+  });
 });
 
 // ---- start ----------------------------------------------------------------

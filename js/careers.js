@@ -136,10 +136,159 @@
       "cr.cta.btn":      "corporation@linqi.tech",
     },
   };
+
+  // Application-modal i18n (added to both languages above)
+  Object.assign(extras.zh, {
+    "apply.eyebrow":        "// JOIN US",
+    "apply.title":          "投递简历",
+    "apply.f.name":         "姓名 *",
+    "apply.f.email":        "邮箱 *",
+    "apply.f.phone":        "电话",
+    "apply.f.github":       "GitHub / 作品集",
+    "apply.f.message":      "自我介绍 / 想说的话",
+    "apply.f.message.ph":   "一段话介绍自己,或者补充一下你最想做的方向",
+    "apply.f.resume":       "简历附件 (PDF / DOC / DOCX,≤10MB)",
+    "apply.f.resume.empty": "未选择文件",
+    "apply.cancel":         "取消",
+    "apply.submit":         "提交申请",
+    "apply.sending":        "提交中…",
+    "apply.ok":             "申请已提交,我们会尽快与您联系 ✓",
+    "apply.err.size":       "文件太大,请压缩到 10MB 以内",
+    "apply.err.type":       "文件格式不支持(请上传 PDF / DOC / DOCX 等)",
+    "apply.err.fields":     "请填写必填项(姓名、邮箱)",
+    "apply.err.network":    "网络错误,请稍后重试",
+  });
+  Object.assign(extras.en, {
+    "apply.eyebrow":        "// JOIN US",
+    "apply.title":          "Send your application",
+    "apply.f.name":         "Name *",
+    "apply.f.email":        "Email *",
+    "apply.f.phone":        "Phone",
+    "apply.f.github":       "GitHub / Portfolio",
+    "apply.f.message":      "About you",
+    "apply.f.message.ph":   "Tell us a bit about yourself, or what you'd like to work on",
+    "apply.f.resume":       "Resume (PDF / DOC / DOCX, ≤10 MB)",
+    "apply.f.resume.empty": "No file selected",
+    "apply.cancel":         "Cancel",
+    "apply.submit":         "Submit application",
+    "apply.sending":        "Sending…",
+    "apply.ok":             "Application received — we'll be in touch ✓",
+    "apply.err.size":       "File too large, please keep it under 10 MB",
+    "apply.err.type":       "Unsupported file type (PDF / DOC / DOCX please)",
+    "apply.err.fields":     "Please fill in name and email",
+    "apply.err.network":    "Network error — please try again",
+  });
+
   if (typeof I18N === "object") {
     Object.assign(I18N.zh, extras.zh);
     Object.assign(I18N.en, extras.en);
     const cur = document.documentElement.getAttribute("data-lang") || "zh";
     if (typeof applyLang === "function") applyLang(cur);
   }
+
+  // ---- Application modal: open from any [data-job-id] button -------------
+  const modal    = document.getElementById("apply-modal");
+  const form     = document.getElementById("apply-form");
+  if (!modal || !form) return;
+
+  const jobIdEl    = document.getElementById("apply-job-id");
+  const jobTitleEl = document.getElementById("apply-job-title");
+  const jobNameEl  = document.getElementById("apply-job");
+  const fileInput  = document.getElementById("apply-resume");
+  const fileLabel  = document.getElementById("apply-file-name");
+  const submitBtn  = document.getElementById("apply-submit");
+  const statusEl   = document.getElementById("apply-status");
+
+  function t(key) {
+    const lang = document.documentElement.getAttribute("data-lang") || "zh";
+    return (typeof I18N === "object" && I18N[lang] && I18N[lang][key]) || key;
+  }
+
+  function openModal(jobId, jobTitle) {
+    jobIdEl.value    = jobId    || "";
+    jobTitleEl.value = jobTitle || "";
+    jobNameEl.textContent = jobTitle ? `→ ${jobTitle}` : "";
+    statusEl.hidden = true;
+    statusEl.className = "apply-status";
+    statusEl.textContent = "";
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+    setTimeout(() => form.querySelector('input[name="name"]')?.focus(), 80);
+  }
+  function closeModal() {
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+    document.body.style.overflow = "";
+    form.reset();
+    fileLabel.textContent = t("apply.f.resume.empty");
+  }
+
+  document.addEventListener("click", (e) => {
+    const trigger = e.target.closest(".job-apply[data-job-id]");
+    if (trigger) {
+      e.preventDefault();
+      openModal(trigger.dataset.jobId, trigger.dataset.jobTitle);
+      return;
+    }
+    if (e.target.closest("[data-apply-close]")) {
+      e.preventDefault();
+      closeModal();
+    }
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.classList.contains("open")) closeModal();
+  });
+
+  // File picker visual feedback
+  fileInput.addEventListener("change", () => {
+    const f = fileInput.files && fileInput.files[0];
+    fileLabel.textContent = f ? `${f.name} · ${(f.size/1024).toFixed(0)} KB` : t("apply.f.resume.empty");
+  });
+
+  // Submission
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    statusEl.hidden = true;
+    statusEl.className = "apply-status";
+
+    const fd = new FormData(form);
+    if (!fd.get("name") || !fd.get("email")) {
+      statusEl.hidden = false;
+      statusEl.classList.add("err");
+      statusEl.textContent = t("apply.err.fields");
+      return;
+    }
+
+    const originalLabel = submitBtn.textContent;
+    submitBtn.disabled = true;
+    submitBtn.textContent = t("apply.sending");
+
+    try {
+      const resp = await fetch("/api/apply", { method: "POST", body: fd });
+      if (!resp.ok) {
+        const data = await resp.json().catch(() => ({}));
+        statusEl.hidden = false;
+        statusEl.classList.add("err");
+        statusEl.textContent =
+          data.error === "FILE_TOO_LARGE"     ? t("apply.err.size")
+        : data.error === "FILE_TYPE_REJECTED" ? t("apply.err.type")
+        : t("apply.err.network");
+        return;
+      }
+      statusEl.hidden = false;
+      statusEl.classList.add("ok");
+      statusEl.textContent = t("apply.ok");
+      form.reset();
+      fileLabel.textContent = t("apply.f.resume.empty");
+      setTimeout(closeModal, 1800);
+    } catch (err) {
+      statusEl.hidden = false;
+      statusEl.classList.add("err");
+      statusEl.textContent = t("apply.err.network");
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = originalLabel;
+    }
+  });
 })();

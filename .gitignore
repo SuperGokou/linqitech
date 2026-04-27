@@ -7,8 +7,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Runtime data (submitted contact inquiries — keep out of git)
+# Runtime data (submitted contact inquiries + resumes — keep out of git)
 data/inquiries.jsonl
+data/applications.jsonl
+data/resumes/
 
 # OS files
 .DS_Store

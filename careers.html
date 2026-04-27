@@ -78,7 +78,7 @@
               <li data-i18n="cr.j1.r3">加分:大模型微调 (LoRA/QLoRA) / ONNX 边缘部署经验</li>
             </ul>
           </div>
-          <a class="job-apply" href="mailto:corporation@linqi.tech?subject=应聘 · 视觉算法工程师" data-i18n="cr.apply">投递简历 →</a>
+          <button type="button" class="job-apply" data-job-id="cr.j1" data-job-title="视觉算法工程师 (高级 / 中级)" data-i18n="cr.apply">投递简历 →</button>
         </article>
 
         <article class="job-card">
@@ -93,7 +93,7 @@
               <li data-i18n="cr.j2.r3">加分:Tailwind / Framer Motion / 数据可视化</li>
             </ul>
           </div>
-          <a class="job-apply" href="mailto:corporation@linqi.tech?subject=应聘 · 前端工程师" data-i18n="cr.apply">投递简历 →</a>
+          <button type="button" class="job-apply" data-job-id="cr.j2" data-job-title="前端 / 全栈工程师" data-i18n="cr.apply">投递简历 →</button>
         </article>
 
         <article class="job-card">
@@ -108,7 +108,7 @@
               <li data-i18n="cr.j3.r3">加分:PLC / SECS-GEM / 工厂 MES 集成经验</li>
             </ul>
           </div>
-          <a class="job-apply" href="mailto:corporation@linqi.tech?subject=应聘 · 硬件产线集成工程师" data-i18n="cr.apply">投递简历 →</a>
+          <button type="button" class="job-apply" data-job-id="cr.j3" data-job-title="硬件 / 产线集成工程师" data-i18n="cr.apply">投递简历 →</button>
         </article>
 
         <article class="job-card">
@@ -123,7 +123,7 @@
               <li data-i18n="cr.j4.r3">加分:制造业 / 自动化 / AI 行业资源</li>
             </ul>
           </div>
-          <a class="job-apply" href="mailto:corporation@linqi.tech?subject=应聘 · BD 客户成功" data-i18n="cr.apply">投递简历 →</a>
+          <button type="button" class="job-apply" data-job-id="cr.j4" data-job-title="BD / 客户成功" data-i18n="cr.apply">投递简历 →</button>
         </article>
 
         <article class="job-card">
@@ -138,7 +138,7 @@
               <li data-i18n="cr.j5.r3">加分:有 GitHub 项目 / Kaggle 经历 / 数学基础扎实</li>
             </ul>
           </div>
-          <a class="job-apply" href="mailto:corporation@linqi.tech?subject=应聘 · 实习生" data-i18n="cr.apply">投递简历 →</a>
+          <button type="button" class="job-apply" data-job-id="cr.j5" data-job-title="实习生 · 算法 / 前端 / 数据标注" data-i18n="cr.apply">投递简历 →</button>
         </article>
       </div>
     </div>
@@ -203,6 +203,59 @@
       </div>
     </div>
   </footer>
+
+  <!-- ========================= APPLICATION MODAL ========================= -->
+  <div class="apply-modal" id="apply-modal" aria-hidden="true">
+    <div class="apply-backdrop" data-apply-close></div>
+    <div class="apply-dialog" role="dialog" aria-modal="true" aria-labelledby="apply-title">
+      <button class="apply-close" type="button" data-apply-close aria-label="Close">×</button>
+      <div class="apply-head">
+        <div class="apply-eyebrow mono" data-i18n="apply.eyebrow">// JOIN US</div>
+        <h3 id="apply-title" data-i18n="apply.title">投递简历</h3>
+        <p class="apply-job mono" id="apply-job">—</p>
+      </div>
+      <form class="apply-form" id="apply-form" novalidate>
+        <input type="hidden" name="jobId"    id="apply-job-id">
+        <input type="hidden" name="jobTitle" id="apply-job-title">
+
+        <div class="apply-grid-2">
+          <label class="apply-field">
+            <span class="apply-lbl" data-i18n="apply.f.name">姓名 *</span>
+            <input name="name" required maxlength="200" autocomplete="name">
+          </label>
+          <label class="apply-field">
+            <span class="apply-lbl" data-i18n="apply.f.email">邮箱 *</span>
+            <input type="email" name="email" required maxlength="320" autocomplete="email">
+          </label>
+          <label class="apply-field">
+            <span class="apply-lbl" data-i18n="apply.f.phone">电话</span>
+            <input type="tel" name="phone" maxlength="50" autocomplete="tel">
+          </label>
+          <label class="apply-field">
+            <span class="apply-lbl" data-i18n="apply.f.github">GitHub / 作品集</span>
+            <input type="url" name="github" maxlength="300" placeholder="https://github.com/...">
+          </label>
+        </div>
+
+        <label class="apply-field">
+          <span class="apply-lbl" data-i18n="apply.f.message">自我介绍 / 想说的话</span>
+          <textarea name="message" rows="3" maxlength="5000" data-i18n-placeholder="apply.f.message.ph" placeholder="一段话介绍自己,或者补充一下你最想做的方向"></textarea>
+        </label>
+
+        <label class="apply-field apply-file">
+          <span class="apply-lbl" data-i18n="apply.f.resume">简历附件 (PDF / DOC / DOCX,≤10MB)</span>
+          <input type="file" name="resume" id="apply-resume" accept=".pdf,.doc,.docx,.rtf,.txt,.md,.pages,.odt">
+          <span class="apply-file-name" id="apply-file-name" data-i18n="apply.f.resume.empty">未选择文件</span>
+        </label>
+
+        <div class="apply-actions">
+          <button type="button" class="btn-light" data-apply-close data-i18n="apply.cancel">取消</button>
+          <button type="submit" class="btn btn-primary" id="apply-submit" data-i18n="apply.submit">提交申请</button>
+        </div>
+        <div class="apply-status" id="apply-status" hidden></div>
+      </form>
+    </div>
+  </div>
 
   <!-- ========================= CHATBOT WIDGET ========================= -->
   <button class="chat-fab" id="chat-fab" aria-label="Open chat">
