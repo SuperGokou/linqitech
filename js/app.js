@@ -24,7 +24,7 @@ const I18N = {
     "hero.lead":        "扬州凌柒科技有限公司专注于工业 AI 深度学习与机器视觉技术。为制造业提供表面缺陷检测、高精度尺寸测量与机器人视觉引导等全场景解决方案。",
     "hero.cta.primary": "获取专属方案",
     "hero.cta.secondary":"了解核心技术",
-    "hero.spec.s1":     "部署周期 4-6 周",
+    "hero.spec.s1":     "部署周期 1-2 周",
     "hero.spec.s2":     "数据本地化 / 不出厂",
     "hero.spec.s3":     "7×24 SLA · 远程升级",
     "hero.spec.s4":     "ISO 9001 兼容",
@@ -189,7 +189,7 @@ const I18N = {
     "hero.lead":        "LingQi Technology builds industrial AI deep-learning and machine-vision systems — surface-defect inspection, micron-grade dimensional measurement, and robot-vision guidance for the modern factory floor.",
     "hero.cta.primary": "Get a Quote",
     "hero.cta.secondary":"How It Works",
-    "hero.spec.s1":     "4-6 week deployment",
+    "hero.spec.s1":     "1-2 week deployment",
     "hero.spec.s2":     "On-prem · data never leaves",
     "hero.spec.s3":     "7×24 SLA · remote OTA",
     "hero.spec.s4":     "ISO 9001 compliant",
@@ -410,8 +410,8 @@ const CASE_DATA = {
     stats: [
       { v: "~90",   u: "%",   l: "资源节省" },
       { v: "11",    u: "类",  l: "零件类型" },
-      { v: "PDF",   u: "",    l: "工艺报告输出" },
-      { v: "VLM",   u: "+RAG",l: "技术栈" },
+      { v: "DFM",   u: "",    l: "工艺报告输出" },
+      { v: "VLM",   u: "",    l: "技术栈" },
     ],
   },
   robot: {
