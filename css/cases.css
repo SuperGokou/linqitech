@@ -1,0 +1,187 @@
+/* =========================================================================
+   Cases page — only the styles unique to /cases.html
+   ========================================================================= */
+.cases-hero {
+  padding: clamp(50px, 6vw, 80px) 0 24px;
+  text-align: center;
+  background: linear-gradient(180deg, var(--blue-pale), transparent 80%);
+}
+.cases-title {
+  font-size: clamp(34px, 4.5vw, 48px);
+  letter-spacing: -1.2px;
+  margin: 8px 0 14px;
+}
+.cases-lead {
+  color: var(--text-body);
+  font-size: 16px;
+  max-width: 720px;
+  margin: 0 auto 28px;
+  line-height: 1.7;
+}
+
+/* nav-link active */
+.nav-links a.active { color: var(--blue); font-weight: 600; }
+
+/* filter pills */
+.cases-filters {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.cases-filter {
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  background: var(--card);
+  color: var(--text-mid);
+  border: 1px solid var(--bd);
+  cursor: pointer;
+  transition: all .2s;
+}
+.cases-filter:hover { border-color: var(--blue-border); color: var(--blue-deep); }
+.cases-filter.active {
+  background: var(--blue);
+  color: #fff;
+  border-color: var(--blue);
+  box-shadow: var(--shadow-blue);
+}
+
+/* grid section */
+.cases-section { padding-top: clamp(30px, 4vw, 50px); }
+.cases-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 22px;
+}
+@media (min-width: 1100px) {
+  .cases-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.case-tile {
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  transition: border-color .25s, transform .25s, box-shadow .25s;
+}
+.case-tile:hover {
+  border-color: var(--blue-border);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+.case-tile.hidden { display: none; }
+
+.case-tile-img {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--bg-alt);
+}
+.case-tile-img.dark    { background: #0a1428; }
+.case-tile-img.medical { background: #0f1729; }
+.case-tile-img.llm     { background: #1a0f2e; }
+.case-tile-img img,
+.case-tile-img svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.case-tile-img svg { object-fit: contain; padding: 12px; }
+
+.case-tile-tag {
+  position: absolute;
+  top: 12px; left: 12px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-family: var(--font-mono);
+  background: rgba(255,255,255,0.92);
+  color: var(--text);
+  backdrop-filter: blur(4px);
+}
+.case-tile-tag.tag-industrial { background: var(--blue);    color: #fff; }
+.case-tile-tag.tag-medical    { background: #06b6d4;        color: #fff; }
+.case-tile-tag.tag-llm        { background: #8b5cf6;        color: #fff; }
+.case-tile-tag.tag-research   { background: var(--bg);      color: var(--text-mid); border: 1px solid var(--bd); }
+
+.case-tile-body {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+.case-tile-body h3 {
+  font-size: 18px;
+  letter-spacing: -0.4px;
+  margin: 0;
+}
+.case-tile-client {
+  font-size: 12px;
+  color: var(--text-mute);
+  margin: 0;
+  letter-spacing: 0.1px;
+}
+.case-tile-body > p:not(.case-tile-client) {
+  font-size: 13.5px;
+  color: var(--text-body);
+  line-height: 1.6;
+  margin: 4px 0 0;
+}
+.case-tile-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--bd);
+}
+.case-tile-stats span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.case-tile-stats b {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: -0.3px;
+  font-family: var(--font-mono);
+}
+.case-tile-stats i {
+  font-style: normal;
+  font-size: 11px;
+  color: var(--text-mute);
+}
+.case-tile-stack {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.case-tile-stack span {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--blue-pale);
+  border: 1px solid var(--blue-border);
+  color: var(--blue-deep);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+}
+
+.cases-empty {
+  text-align: center;
+  color: var(--text-mute);
+  font-size: 14px;
+  margin: 60px 0;
+}

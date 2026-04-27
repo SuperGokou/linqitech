@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>核心技术 · 扬州凌柒科技</title>
+  <meta name="description" content="凌柒科技核心技术 — 三层级视觉 AI 方案矩阵、多路融合算法、端侧推理、视觉大模型微调与部署。" />
+  <link rel="icon" href="assets/logo_mark.png" type="image/png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/tech.css">
+</head>
+<body>
+
+  <!-- ============================== NAV =============================== -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="index.html#top">
+        <img src="assets/logo_mark.png" alt="LingQi" class="brand-logo">
+        <span class="brand-text">
+          <span class="brand-zh" data-i18n="brand.zh"></span>
+          <span class="brand-en" data-i18n="brand.en"></span>
+        </span>
+      </a>
+      <nav class="nav-links">
+        <a href="index.html#top"   data-i18n="nav.home"></a>
+        <a href="technology.html"  class="active" data-i18n="nav.capabilities"></a>
+        <a href="cases.html"       data-i18n="nav.case"></a>
+        <a href="about.html"       data-i18n="nav.about"></a>
+        <a href="careers.html"     data-i18n="nav.careers"></a>
+      </nav>
+      <div class="nav-actions">
+        <button class="lang-toggle" id="lang-toggle">
+          <span class="lang-pill" data-key="zh">中</span>
+          <span class="lang-pill" data-key="en">EN</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================ HERO ================================ -->
+  <section class="tech-hero">
+    <div class="container">
+      <div class="section-eyebrow" data-i18n="tech.eyebrow">Core Technology</div>
+      <h1 class="tech-h1" data-i18n="tech.title">从经典视觉到大模型 · 全栈视觉感知能力</h1>
+      <p class="tech-lead" data-i18n="tech.lead">凌柒科技自研多路融合算法栈,把工业 AOI 从「规则匹配」推向「认知理解」。我们不强求一套打天下 — 按缺陷复杂度匹配最适合的工具,客户只为真正需要的复杂度付费。</p>
+    </div>
+  </section>
+
+  <!-- ============================ NEURAL NETWORK DEMO =================== -->
+  <section class="section nn-demo">
+    <div class="container">
+      <div class="section-eyebrow" data-i18n="nn.eyebrow">// Neural Network in Action</div>
+      <h2 class="section-title" data-i18n="nn.title">神经网络如何识别瑕疵</h2>
+      <p class="section-lead" data-i18n="nn.lead">从输入像素到分类输出 — 一次完整的前向推理,只用 ~52 ms。</p>
+
+      <!-- CNN-Explainer-style visualization (replicates poloclub/cnn-explainer Tiny VGG) -->
+      <div class="cnn-stage" id="cnn-stage">
+        <div class="cnn-arch-meta mono">
+          <span class="cnn-arch-tag">TINY VGG</span>
+          <span>Conv · ReLU · MaxPool ×2 · Softmax · 10 hidden layers</span>
+          <span class="cnn-arch-perf">6.3 MB · ~52 ms / image</span>
+        </div>
+
+        <div class="cnn-flow">
+          <!-- INPUT — 3 separated RGB channels -->
+          <div class="cnn-layer cnn-layer-input">
+            <div class="cnn-layer-head">
+              <div class="cnn-layer-tag mono">input</div>
+              <div class="cnn-layer-shape mono">(64, 64, 3)</div>
+            </div>
+            <div class="cnn-input-channels-stack" id="cnn-input-channels"></div>
+          </div>
+
+          <!-- 10 HIDDEN LAYERS — JS populates with real conv feature maps -->
+          <div class="cnn-layer" data-kind="conv" data-step="1">
+            <div class="cnn-layer-head"><div class="cnn-layer-tag mono">conv_1_1</div><div class="cnn-layer-shape mono">(62, 62, 10)</div></div>
+            <div class="cnn-maps"></div>
+            <div class="cnn-scale"></div>
+          </div>
+          <div class="cnn-layer" data-kind="relu" data-step="2">
+            <div class="cnn-layer-head"><div class="cnn-layer-tag mono">relu_1_1</div><div class="cnn-layer-shape mono">(62, 62, 10)</div></div>
+            <div class="cnn-maps"></div>
+            <div class="cnn-scale"></div>
+          </div>
+          <div class="cnn-layer" data-kind="conv" data-step="3">
+            <div class="cnn-layer-head"><div class="cnn-layer-tag mono">conv_1_2</div><div class="cnn-layer-shape mono">(60, 60, 10)</div></div>
+            <div class="cnn-maps"></div>
+            <div class="cnn-scale"></div>
+          </div>
+          <div class="cnn-layer" data-kind="relu" data-step="4">
+            <div class="cnn-layer-head"><div class="cnn-layer-tag mono">relu_1_2</div><div class="cnn-layer-shape mono">(60, 60, 10)</div></div>
+            <div class="cnn-maps"></div>
+            <div class="cnn-scale"></div>
+          </div>
+          <div class="cnn-layer" data-kind="pool" data-step="5">
+            <div class="cnn-layer-head"><div class="cnn-layer-tag mono">max_pool_1</div><div class="cnn-layer-shape mono">(30, 30, 10)</div></div>
+            <div class="cnn-maps"></div>
+            <div class="cnn-scale"></div>
+          </div>
+          <div class="cnn-layer" data-kind="conv" data-step="6">
+            <div class="cnn-layer-head"><div class="cnn-layer-tag mono">conv_2_1</div><div class="cnn-layer-shape mono">(28, 28, 10)</div></div>
+            <div class="cnn-maps"></div>
+            <div class="cnn-scale"></div>
+          </div>
+          <div class="cnn-layer" data-kind="relu" data-step="7">
+            <div class="cnn-layer-head"><div class="cnn-layer-tag mono">relu_2_1</div><div class="cnn-layer-shape mono">(28, 28, 10)</div></div>
+            <div class="cnn-maps"></div>
+            <div class="cnn-scale"></div>
+          </div>
+          <div class="cnn-layer" data-kind="conv" data-step="8">
+            <div class="cnn-layer-head"><div class="cnn-layer-tag mono">conv_2_2</div><div class="cnn-layer-shape mono">(26, 26, 10)</div></div>
+            <div class="cnn-maps"></div>
+            <div class="cnn-scale"></div>
+          </div>
+          <div class="cnn-layer" data-kind="relu" data-step="9">
+            <div class="cnn-layer-head"><div class="cnn-layer-tag mono">relu_2_2</div><div class="cnn-layer-shape mono">(26, 26, 10)</div></div>
+            <div class="cnn-maps"></div>
+            <div class="cnn-scale"></div>
+          </div>
+          <div class="cnn-layer" data-kind="pool" data-step="10">
+            <div class="cnn-layer-head"><div class="cnn-layer-tag mono">max_pool_2</div><div class="cnn-layer-shape mono">(13, 13, 10)</div></div>
+            <div class="cnn-maps"></div>
+            <div class="cnn-scale"></div>
+          </div>
+
+          <!-- OUTPUT — 6 PCB defect classes (matching MathWorks YOLOX defect taxonomy) -->
+          <div class="cnn-layer cnn-layer-output">
+            <div class="cnn-layer-head"><div class="cnn-layer-tag mono">output</div><div class="cnn-layer-shape mono">(6)</div></div>
+            <ul class="cnn-output-list mono">
+              <li class="cnn-out-row" data-active="true"><span class="cnn-out-name">missing_hole</span><span class="cnn-out-bar"><i style="--w:88%"></i></span></li>
+              <li class="cnn-out-row"><span class="cnn-out-name">mouse_bite</span><span class="cnn-out-bar"><i style="--w:6%"></i></span></li>
+              <li class="cnn-out-row"><span class="cnn-out-name">open_circuit</span><span class="cnn-out-bar"><i style="--w:3%"></i></span></li>
+              <li class="cnn-out-row"><span class="cnn-out-name">short</span><span class="cnn-out-bar"><i style="--w:2%"></i></span></li>
+              <li class="cnn-out-row"><span class="cnn-out-name">spur</span><span class="cnn-out-bar"><i style="--w:1%"></i></span></li>
+              <li class="cnn-out-row"><span class="cnn-out-name">spurious_copper</span><span class="cnn-out-bar"><i style="--w:0%"></i></span></li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- shared colormap legend at bottom — RdBu divergent (negative red, positive blue) -->
+        <div class="cnn-colormap-legend mono">
+          <span class="cnn-cm-label">activation</span>
+          <span class="cnn-cm-min">−1.56</span>
+          <span class="cnn-cm-bar"></span>
+          <span class="cnn-cm-zero">0</span>
+          <span class="cnn-cm-bar cnn-cm-bar-r"></span>
+          <span class="cnn-cm-max">+1.56</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= 3-Tier Solution Matrix =========================== -->
+  <section class="section tech-tiers">
+    <div class="container">
+      <div class="section-eyebrow" data-i18n="tech.tiers.eyebrow">// Solution Matrix</div>
+      <h2 class="section-title" data-i18n="tech.tiers.title">三层级方案矩阵</h2>
+      <p class="section-lead" data-i18n="tech.tiers.lead">L1 轻量 → L2 标准 → L3 大模型增强 — 同一团队提供从规则到大模型的全栈视觉方案。</p>
+
+      <div class="tier-rows">
+        <article class="tier-row tier-l1">
+          <div class="tier-row-tag">
+            <div class="tier-row-num">L1</div>
+            <div class="tier-row-name" data-i18n="tech.l1.name">轻量方案</div>
+            <div class="tier-row-meta mono">¥ · ~1 周</div>
+          </div>
+          <div class="tier-row-body">
+            <div class="tier-row-cell">
+              <strong data-i18n="tech.scenarios">应用场景</strong>
+              <p data-i18n="tech.l1.s">装配缺失 / 尺寸超差 / 明显凹陷 / 标贴错位</p>
+            </div>
+            <div class="tier-row-cell">
+              <strong data-i18n="tech.stack">技术栈</strong>
+              <p data-i18n="tech.l1.t">OpenCV · 模板匹配 · 阈值与形态学</p>
+            </div>
+            <div class="tier-row-cell">
+              <strong data-i18n="tech.cases">典型案例</strong>
+              <p data-i18n="tech.l1.c">汽车螺栓装配 · 家电外壳定位 · 包装合格性</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="tier-row tier-l2 featured">
+          <div class="tier-row-tag">
+            <div class="tier-row-num">L2 ★</div>
+            <div class="tier-row-name" data-i18n="tech.l2.name">标准方案</div>
+            <div class="tier-row-meta mono">¥¥ · 2-4 周</div>
+          </div>
+          <div class="tier-row-body">
+            <div class="tier-row-cell">
+              <strong data-i18n="tech.scenarios">应用场景</strong>
+              <p data-i18n="tech.l2.s">外观瑕疵 / 多类缺陷分类 / 持续学习</p>
+            </div>
+            <div class="tier-row-cell">
+              <strong data-i18n="tech.stack">技术栈</strong>
+              <p data-i18n="tech.l2.t"><b>YOLOv8 + CNN + 金样像素对比</b></p>
+            </div>
+            <div class="tier-row-cell">
+              <strong data-i18n="tech.cases">案例(已落地)</strong>
+              <p data-i18n="tech.l2.c">键盘 AOI · 连接器 · 注塑件外观全检</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="tier-row tier-l3">
+          <div class="tier-row-tag">
+            <div class="tier-row-num">L3</div>
+            <div class="tier-row-name" data-i18n="tech.l3.name">大模型增强</div>
+            <div class="tier-row-meta mono">¥¥¥ · 6-8 周</div>
+          </div>
+          <div class="tier-row-body">
+            <div class="tier-row-cell">
+              <strong data-i18n="tech.scenarios">应用场景</strong>
+              <p data-i18n="tech.l3.s">零样本检测 / 开放式描述 / 报告生成 / 异常解释</p>
+            </div>
+            <div class="tier-row-cell">
+              <strong data-i18n="tech.stack">技术栈</strong>
+              <p data-i18n="tech.l3.t">Qwen2.5-VL · MiniCPM-V + LoRA + RAG</p>
+            </div>
+            <div class="tier-row-cell">
+              <strong data-i18n="tech.cases">典型案例</strong>
+              <p data-i18n="tech.l3.c">医疗耗材冷启动 · 首件检测+工艺生成 · 新品类</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= 3-PHASE PIPELINE =========================== -->
+  <section class="section tech-pipeline" style="background: var(--bg-alt);">
+    <div class="container">
+      <div class="section-eyebrow" data-i18n="tech.pipe.eyebrow">// Universal Pipeline</div>
+      <h2 class="section-title" data-i18n="tech.pipe.title">通用底层架构 · 三阶段流水线</h2>
+      <p class="section-lead" data-i18n="tech.pipe.lead">不变项 — 同一架构换数据集 + 微调模型即可服务多行业,新行业落地周期 4-6 周。</p>
+
+      <div class="phase-grid">
+        <div class="phase-card">
+          <div class="phase-num">01</div>
+          <h4 data-i18n="tech.p1.t">图像定位</h4>
+          <p data-i18n="tech.p1.b">OpenCV 自适应阈值 → 形态学 → 透视校正 → 朝向自动判定。处理 8K×13K 大分辨率工业图像,~0.5s/张。</p>
+        </div>
+        <div class="phase-arrow">→</div>
+        <div class="phase-card">
+          <div class="phase-num">02</div>
+          <h4 data-i18n="tech.p2.t">目标切割</h4>
+          <p data-i18n="tech.p2.b">YOLOv8 检测分割,关键部件 bbox 输出。mAP50 = 99.2%,单图 ~52ms (CPU)。</p>
+        </div>
+        <div class="phase-arrow">→</div>
+        <div class="phase-card">
+          <div class="phase-num">03</div>
+          <h4 data-i18n="tech.p3.t">缺陷判定</h4>
+          <p data-i18n="tech.p3.b">CNN 分类 + 金样对比 + OpenCV 黑点 + 高通异常 — 四路并行,任一触发即标 NG。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= TECH MOAT =========================== -->
+  <section class="section tech-moat">
+    <div class="container">
+      <div class="section-eyebrow" data-i18n="tech.moat.eyebrow">// Differentiation</div>
+      <h2 class="section-title" data-i18n="tech.moat.title">技术壁垒 · 我们的差异化优势</h2>
+
+      <div class="moat-grid">
+        <article class="moat-card">
+          <div class="moat-icon">⌬</div>
+          <h3 data-i18n="tech.moat.m1.t">多路融合算法</h3>
+          <p data-i18n="tech.moat.m1.b">CNN + 金样 + OpenCV + 高通,四路并行,任一触发即标 NG。召回率 +18%,显著降低漏检。</p>
+        </article>
+        <article class="moat-card">
+          <div class="moat-icon">⚡</div>
+          <h3 data-i18n="tech.moat.m2.t">浏览器端推理</h3>
+          <p data-i18n="tech.moat.m2.b">ONNX Runtime Web 零服务端部署,数据不出厂、不上云。同时支持 GPU 服务器和边缘盒子。</p>
+        </article>
+        <article class="moat-card">
+          <div class="moat-icon">⊛</div>
+          <h3 data-i18n="tech.moat.m3.t">工业图像专精</h3>
+          <p data-i18n="tech.moat.m3.b">8192×13000 大分辨率 TIF 端到端处理 3 秒级,这是非主流 VLM 难以做到的。</p>
+        </article>
+        <article class="moat-card">
+          <div class="moat-icon">◈</div>
+          <h3 data-i18n="tech.moat.m4.t">金样对比体系</h3>
+          <p data-i18n="tech.moat.m4.b">部件 ID 识别 → 自动匹配金样 → 像素级差异检测,微小瑕疵召回率显著提升。</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= PERFORMANCE METRICS =================== -->
+  <section class="section tech-metrics" style="background: var(--bg-alt);">
+    <div class="container">
+      <div class="section-eyebrow" data-i18n="tech.metrics.eyebrow">// Production Numbers</div>
+      <h2 class="section-title" data-i18n="tech.metrics.title">生产环境指标</h2>
+
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="metric-num">97.5<span class="unit">%</span></div>
+          <div class="metric-lbl" data-i18n="tech.m.acc">Top-1 缺陷分类准确率</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num">99.2<span class="unit">%</span></div>
+          <div class="metric-lbl" data-i18n="tech.m.map">YOLO mAP50 目标检测</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num">~3<span class="unit">s</span></div>
+          <div class="metric-lbl" data-i18n="tech.m.lat">单张大图端到端 (CPU)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num">8K<span class="unit">×13K</span></div>
+          <div class="metric-lbl" data-i18n="tech.m.res">原生超大图处理</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num">11<span class="unit">类</span></div>
+          <div class="metric-lbl" data-i18n="tech.m.types">常见缺陷类别覆盖</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-num">7<span class="unit">×24h</span></div>
+          <div class="metric-lbl" data-i18n="tech.m.uptime">不间断运行 SLA</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= CTA STRIP =========================== -->
+  <section class="section tech-cta-strip">
+    <div class="container">
+      <div class="about-cta-card">
+        <h3 data-i18n="tech.cta.title">想看实际效果?</h3>
+        <p data-i18n="tech.cta.body">浏览我们落地的视觉 AI 案例,或者直接发起一次技术咨询。</p>
+        <div class="about-cta-actions">
+          <a class="btn btn-primary" href="cases.html" data-i18n="tech.cta.btn1">查看案例展示</a>
+          <a class="btn btn-ghost"   href="index.html#contact" data-i18n="tech.cta.btn2">联系我们</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== FOOTER ============================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="index.html#top">
+            <img src="assets/logo_mark.png" alt="LingQi" class="brand-logo">
+            <span class="brand-text"><span class="brand-zh" data-i18n="brand.zh"></span></span>
+          </a>
+          <p data-i18n="footer.tagline"></p>
+        </div>
+        <div class="footer-col">
+          <h5 data-i18n="footer.col1.title">解决方案</h5>
+          <ul>
+            <li><a href="index.html#solutions" data-i18n="sol.s1.title"></a></li>
+            <li><a href="index.html#solutions" data-i18n="sol.s2.title"></a></li>
+            <li><a href="index.html#solutions" data-i18n="sol.s3.title"></a></li>
+            <li><a href="index.html#solutions" data-i18n="sol.s4.title"></a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5 data-i18n="footer.col2.title">关于我们</h5>
+          <ul>
+            <li><a href="about.html" data-i18n="footer.col2.l1">公司简介</a></li>
+            <li><a href="technology.html" data-i18n="footer.col2.l2">核心技术</a></li>
+            <li><a href="careers.html" data-i18n="footer.col2.l3">招贤纳士</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5 data-i18n="footer.col3.title">联系方式</h5>
+          <ul class="footer-contact">
+            <li><a href="https://map.baidu.com/search/扬州市广陵区创业中心7-707" target="_blank" rel="noopener" data-i18n="footer.col3.addr1">江苏省扬州市广陵区</a></li>
+            <li><a href="https://map.baidu.com/search/扬州市广陵区创业中心7-707" target="_blank" rel="noopener" data-i18n="footer.col3.addr2">创业中心 7-707</a></li>
+            <li>+86 0514-85764459</li>
+            <li>+86 0514-85764366</li>
+            <li><a href="mailto:corporation@linqi.tech">corporation@linqi.tech</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span data-i18n="footer.copy">© 2026 扬州凌柒科技有限公司. All rights reserved.</span>
+        <div class="footer-bottom-links">
+          <a href="privacy.html" data-i18n="footer.privacy">隐私政策</a>
+          <a href="terms.html"   data-i18n="footer.terms">服务条款</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================= CHATBOT WIDGET ========================= -->
+  <button class="chat-fab" id="chat-fab" aria-label="Open chat">
+    <span class="chat-fab-icon">💬</span>
+    <span class="chat-fab-pulse" aria-hidden="true"></span>
+  </button>
+
+  <div class="chat-panel" id="chat-panel" aria-hidden="true">
+    <div class="chat-head">
+      <div class="chat-head-l">
+        <div class="chat-avatar"><img src="assets/logo_mark.png" alt="LingQi"></div>
+        <div>
+          <div class="chat-title" data-i18n="chat.title"></div>
+          <div class="chat-sub"><span class="online-dot"></span><span data-i18n="chat.online"></span></div>
+        </div>
+      </div>
+      <button class="chat-close" id="chat-close" aria-label="Close">×</button>
+    </div>
+    <div class="chat-body" id="chat-body" aria-live="polite"></div>
+    <form class="chat-input" id="chat-form" autocomplete="off">
+      <input type="text" id="chat-text" data-i18n-placeholder="chat.placeholder" />
+      <button type="submit" class="chat-send" data-i18n="chat.send" aria-label="Send"></button>
+    </form>
+  </div>
+
+  <script src="js/app.js" defer></script>
+  <script src="js/tech.js" defer></script>
+</body>
+</html>

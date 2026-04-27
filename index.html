@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="zh-CN" data-lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>扬州凌柒科技有限公司 · LingQi Technology</title>
+  <meta name="description" content="扬州凌柒科技 — 工业 AI 视觉检测平台,为电子制造、汽车零部件、家电、医疗耗材产线提供高精度机器视觉解决方案。" />
+  <link rel="icon" href="assets/logo_mark.png" type="image/png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ============================== NAV =============================== -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="brand" href="#top">
+        <img src="assets/logo_mark.png" alt="LingQi" class="brand-logo">
+        <span class="brand-text">
+          <span class="brand-zh" data-i18n="brand.zh"></span>
+          <span class="brand-en" data-i18n="brand.en"></span>
+        </span>
+      </a>
+      <nav class="nav-links">
+        <a href="#top"            data-i18n="nav.home"></a>
+        <a href="technology.html" data-i18n="nav.capabilities"></a>
+        <a href="cases.html"      data-i18n="nav.case"></a>
+        <a href="about.html"      data-i18n="nav.about"></a>
+        <a href="careers.html"    data-i18n="nav.careers"></a>
+      </nav>
+      <div class="nav-actions">
+        <button class="lang-toggle" id="lang-toggle">
+          <span class="lang-pill" data-key="zh">中</span>
+          <span class="lang-pill" data-key="en">EN</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================== HERO ============================== -->
+  <section class="hero" id="top">
+    <div class="container">
+      <div class="hero-grid">
+        <!-- LEFT: copy -->
+        <div class="hero-left">
+          <span class="hero-pill"><span class="dot"></span><span data-i18n="hero.pill"></span></span>
+          <h1 class="hero-title">
+            <span data-i18n="hero.title.l1"></span>
+            <span class="accent" data-i18n="hero.title.l2"></span>
+          </h1>
+          <p class="hero-lead" data-i18n="hero.lead"></p>
+          <div class="hero-ctas">
+            <a class="btn btn-primary" href="#contact"     data-i18n="hero.cta.primary"></a>
+            <a class="btn btn-ghost"   href="#capabilities" data-i18n="hero.cta.secondary"></a>
+          </div>
+
+          <!-- spec strip — visually anchors the left side to the tech widget on the right -->
+          <ul class="hero-spec mono">
+            <li><span class="hero-spec-dot"></span><span data-i18n="hero.spec.s1">部署周期 4-6 周</span></li>
+            <li><span class="hero-spec-dot"></span><span data-i18n="hero.spec.s2">数据本地化 / 不出厂</span></li>
+            <li><span class="hero-spec-dot"></span><span data-i18n="hero.spec.s3">7×24 SLA · 远程升级</span></li>
+            <li><span class="hero-spec-dot"></span><span data-i18n="hero.spec.s4">ISO 9001 兼容</span></li>
+          </ul>
+        </div>
+
+        <!-- RIGHT: AI scan demo widget -->
+        <div class="hero-right">
+          <div class="scan-window">
+            <div class="scan-titlebar">
+              <div class="scan-traffic"><span></span><span></span><span></span></div>
+              <div class="scan-titlebar-title">LQ-Vision System v3.0</div>
+            </div>
+            <div class="scan-stage" id="scan-stage">
+              <img class="scan-bg" src="assets/chip_demo.jpg" alt="Intel 486 Die">
+              <div class="scan-frame-border"></div>
+              <div class="scan-label" id="scan-label" data-i18n="scan.target">Intel 486 Die</div>
+
+              <!-- Bounding boxes — calibrated by pixel analysis of the chip die image
+                   to land tightly on the two visible black-particle defects -->
+              <!-- Defect 1: small particle in upper-left of cell array (dot ctr ≈ 17.3%, 20.4%) -->
+              <div class="scan-box defect" style="left: 15.5%; top: 18%; width: 3.5%; height: 5%;">
+                <span class="scan-box-tag">Particle: 99.8%</span>
+              </div>
+              <!-- Defect 2: small particle in middle-right (dot ctr ≈ 65.1%, 45.8%) -->
+              <div class="scan-box defect" style="left: 63%; top: 43%; width: 4%; height: 5.5%;">
+                <span class="scan-box-tag">Particle: 96.2%</span>
+              </div>
+
+              <div class="scan-line"></div>
+
+              <div class="scan-hud">
+                <span><span class="live-dot"></span>CAM_01 // <span id="scan-state">READY</span></span>
+                <span id="scan-progress">SCAN: 0%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="scan-controls">
+            <button class="scan-btn" id="scan-run" data-i18n="scan.run">扫描检测</button>
+            <button class="scan-btn scan-btn-ghost" id="scan-reset" data-i18n="scan.reset" disabled>重置</button>
+            <span class="scan-status" id="scan-status" data-i18n="scan.idle">待机 · 点击扫描</span>
+          </div>
+
+          <!-- Report panel (hidden until scan completes) -->
+          <div class="scan-report" id="scan-report">
+            <div class="scan-report-head">
+              <h4 data-i18n="scan.report.title">检测报告</h4>
+              <span class="scan-report-status fail" id="scan-report-status" data-i18n="scan.report.status">FAIL · 检出 2 处缺陷</span>
+            </div>
+            <div class="scan-report-grid">
+              <div class="scan-report-cell">
+                <div class="lbl" data-i18n="scan.report.defects">缺陷数</div>
+                <div class="val" style="color: var(--red);">2</div>
+              </div>
+              <div class="scan-report-cell">
+                <div class="lbl" data-i18n="scan.report.duration">耗时</div>
+                <div class="val">2.4 s</div>
+              </div>
+              <div class="scan-report-cell">
+                <div class="lbl" data-i18n="scan.report.confidence">平均置信度</div>
+                <div class="val">98.0%</div>
+              </div>
+            </div>
+            <div class="scan-report-list">
+              <div class="row"><span class="loc">[ 248, 185]–[ 304, 236]</span><span class="ty defect" data-i18n="scan.report.defectType">颗粒污染 99.8%</span></div>
+              <div class="row"><span class="loc">[1008, 442]–[1072, 499]</span><span class="ty defect" data-i18n="scan.report.defectType2">异物附着 96.2%</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats row -->
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-num"><span data-counter="1">0</span><span class="unit">μm</span></div>
+          <div class="stat-label" data-i18n="stat.precision">最高检测精度</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">&lt;<span data-counter="20">0</span><span class="unit">ms</span></div>
+          <div class="stat-label" data-i18n="stat.latency">平均处理速度</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num"><span data-counter="99.9">0</span><span class="unit">%</span></div>
+          <div class="stat-label" data-i18n="stat.acc">缺陷检出率</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">7<span class="unit">×24h</span></div>
+          <div class="stat-label" data-i18n="stat.uptime">稳定运行</div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================= CAPABILITIES =========================== -->
+  <section class="section" id="capabilities">
+    <div class="container">
+      <div class="section-eyebrow" data-i18n="cap.eyebrow">Core Technology</div>
+      <h2 class="section-title" data-i18n="cap.title"></h2>
+      <p class="section-lead" style="max-width: 940px; white-space: nowrap; overflow-x: auto;" data-i18n="cap.lead"></p>
+
+      <!-- YOLOX PCB defect detection animation — Input → Pipeline → Output -->
+      <div class="yolox-detect">
+        <div class="yolox-head">
+          <span class="yolox-tag mono">YOLOX · PCB DEFECT DETECTION</span>
+          <span class="yolox-meta mono" data-i18n="yolox.meta">参考 MathWorks Deep Learning Toolbox · 6 类缺陷</span>
+        </div>
+
+        <div class="yolox-stage">
+          <!-- INPUT -->
+          <div class="yolox-panel yolox-input">
+            <div class="yolox-panel-head">
+              <span class="yolox-panel-label" data-i18n="yolox.input">INPUT</span>
+              <span class="yolox-panel-meta mono">640 × 640 · RGB</span>
+            </div>
+            <div class="yolox-panel-img">
+              <img src="assets/pcb_yolox_input.jpg" alt="PCB input">
+              <div class="yolox-scanline"></div>
+              <div class="yolox-grid"></div>
+            </div>
+          </div>
+
+          <!-- PIPELINE -->
+          <div class="yolox-pipeline">
+            <div class="yolox-arrow yolox-arrow-l">
+              <svg viewBox="0 0 32 32" width="100%" height="100%" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16h22"/><path d="m20 9 7 7-7 7"/></svg>
+            </div>
+            <ul class="yolox-stages">
+              <li class="yolox-st" style="--d:0s">
+                <span class="yolox-st-dot"></span>
+                <span class="yolox-st-name" data-i18n="yolox.s1.t">Backbone</span>
+                <span class="yolox-st-sub mono">CSPDarknet</span>
+                <span class="yolox-st-bar"></span>
+              </li>
+              <li class="yolox-st" style="--d:.4s">
+                <span class="yolox-st-dot"></span>
+                <span class="yolox-st-name" data-i18n="yolox.s2.t">Neck</span>
+                <span class="yolox-st-sub mono">FPN · PAN</span>
+                <span class="yolox-st-bar"></span>
+              </li>
+              <li class="yolox-st" style="--d:.8s">
+                <span class="yolox-st-dot"></span>
+                <span class="yolox-st-name" data-i18n="yolox.s3.t">Head</span>
+                <span class="yolox-st-sub mono">Decoupled</span>
+                <span class="yolox-st-bar"></span>
+              </li>
+              <li class="yolox-st" style="--d:1.2s">
+                <span class="yolox-st-dot"></span>
+                <span class="yolox-st-name" data-i18n="yolox.s4.t">NMS</span>
+                <span class="yolox-st-sub mono">IoU ≤ 0.5</span>
+                <span class="yolox-st-bar"></span>
+              </li>
+            </ul>
+            <div class="yolox-arrow yolox-arrow-r">
+              <svg viewBox="0 0 32 32" width="100%" height="100%" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 16h22"/><path d="m20 9 7 7-7 7"/></svg>
+            </div>
+          </div>
+
+          <!-- OUTPUT -->
+          <div class="yolox-panel yolox-output">
+            <div class="yolox-panel-head">
+              <span class="yolox-panel-label" data-i18n="yolox.output">OUTPUT</span>
+              <span class="yolox-panel-meta mono"><span data-i18n="yolox.detected">检出</span> 3 · 2.4 ms</span>
+            </div>
+            <div class="yolox-panel-img">
+              <img src="assets/pcb_yolox_input.jpg" alt="PCB output with detections" class="yolox-out-img">
+              <div class="yolox-out-mask"></div>
+              <!-- positions calibrated by pixel analysis of the reference annotated image -->
+              <div class="yolox-box yolox-b1" style="left:52.5%; top:20.5%; width:2.5%; height:4.5%;">
+                <span class="yolox-box-tag">missing_hole 0.94</span>
+              </div>
+              <div class="yolox-box yolox-b2" style="left:57.75%; top:49.8%; width:2.5%; height:4%;">
+                <span class="yolox-box-tag">missing_hole 0.91</span>
+              </div>
+              <div class="yolox-box yolox-b3 right-anchor" style="left:83.85%; top:80.3%; width:2.5%; height:3%;">
+                <span class="yolox-box-tag">missing_hole 0.88</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6-class chip strip -->
+        <div class="yolox-classes mono">
+          <span class="yolox-classes-lbl" data-i18n="yolox.classes">6-CLASS DEFECTS</span>
+          <span class="yolox-cls active">missing_hole</span>
+          <span class="yolox-cls">mouse_bite</span>
+          <span class="yolox-cls">open_circuit</span>
+          <span class="yolox-cls">short</span>
+          <span class="yolox-cls">spur</span>
+          <span class="yolox-cls">spurious_copper</span>
+        </div>
+      </div>
+
+      <div class="cap-grid">
+        <article class="cap-card">
+          <div class="cap-icon">⌬</div>
+          <h3 data-i18n="cap.c1.title"></h3>
+          <p data-i18n="cap.c1.body"></p>
+        </article>
+        <article class="cap-card">
+          <div class="cap-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M13 2 3 14h7l-1 8 11-12h-7z"/>
+            </svg>
+          </div>
+          <h3 data-i18n="cap.c2.title"></h3>
+          <p data-i18n="cap.c2.body"></p>
+        </article>
+        <article class="cap-card">
+          <div class="cap-icon">◬</div>
+          <h3 data-i18n="cap.c3.title"></h3>
+          <p data-i18n="cap.c3.body"></p>
+        </article>
+        <article class="cap-card">
+          <div class="cap-icon">◈</div>
+          <h3 data-i18n="cap.c4.title"></h3>
+          <p data-i18n="cap.c4.body"></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== TECH STACK MARQUEE =================== -->
+  <section class="section section-stack" id="techstack">
+    <div class="container">
+      <div class="section-eyebrow" data-i18n="stack.eyebrow">Tech Stack</div>
+      <h2 class="section-title" data-i18n="stack.title"></h2>
+      <p class="section-lead" data-i18n="stack.lead"></p>
+    </div>
+    <div class="marquee">
+      <div class="marquee-track" id="marquee-track">
+        <!-- pills are injected by app.js so we don't duplicate the long list in HTML -->
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== SOLUTIONS ============================ -->
+  <section class="section" id="solutions" style="background: var(--bg-alt);">
+    <div class="container">
+      <div class="section-eyebrow" data-i18n="sol.eyebrow">Solutions</div>
+      <h2 class="section-title" data-i18n="sol.title"></h2>
+      <p class="section-lead" data-i18n="sol.lead"></p>
+
+      <div class="sol-grid">
+        <article class="sol-card">
+          <div class="sol-img"><img src="assets/figma/sol_surface.jpg" alt=""></div>
+          <div class="sol-body">
+            <h3 data-i18n="sol.s1.title"></h3>
+            <p data-i18n="sol.s1.body"></p>
+          </div>
+        </article>
+        <article class="sol-card">
+          <div class="sol-img"><img src="assets/figma/sol_dimension.jpg" alt=""></div>
+          <div class="sol-body">
+            <h3 data-i18n="sol.s2.title"></h3>
+            <p data-i18n="sol.s2.body"></p>
+          </div>
+        </article>
+        <article class="sol-card">
+          <div class="sol-img"><img src="assets/figma/sol_ocr.jpg" alt=""></div>
+          <div class="sol-body">
+            <h3 data-i18n="sol.s3.title"></h3>
+            <p data-i18n="sol.s3.body"></p>
+          </div>
+        </article>
+        <article class="sol-card">
+          <div class="sol-img"><img src="assets/figma/sol_assembly.jpg" alt=""></div>
+          <div class="sol-body">
+            <h3 data-i18n="sol.s4.title"></h3>
+            <p data-i18n="sol.s4.body"></p>
+          </div>
+        </article>
+      </div>
+
+      <div class="case-more" style="margin-top: 32px;">
+        <a class="case-more-link" href="technology.html">
+          <span data-i18n="sol.more">了解核心技术</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= CASE STUDY ========================= -->
+  <section class="section" id="case">
+    <div class="container">
+      <div class="section-eyebrow" data-i18n="case.eyebrow">Case Study</div>
+      <h2 class="section-title" data-i18n="case.title">实测案例 · 多场景视觉 AI</h2>
+      <p class="section-lead" data-i18n="case.lead">从工业产线到医疗影像 · 从分类模型到大模型工艺生成 — 选择任一场景查看详情。</p>
+
+      <!-- Category tabs — switch the featured case below -->
+      <div class="case-tabs" id="case-tabs">
+        <button class="case-tab active" data-id="keyboard" data-i18n="case.tab.industrial">工业 AOI</button>
+        <button class="case-tab"        data-id="xray"     data-i18n="case.tab.medical">医疗影像</button>
+        <button class="case-tab"        data-id="noval"    data-i18n="case.tab.llm">大模型 / VLM</button>
+        <button class="case-tab"        data-id="robot"    data-i18n="case.tab.research">机器人视觉</button>
+      </div>
+
+      <div class="case-frame" id="case-frame">
+        <a class="case-image" id="case-image-link" href="cases.html#case-keyboard" title="点击查看详情">
+          <span class="case-badge mono" id="case-badge">MAC 键盘 · LIVE</span>
+          <img id="case-image-img" src="assets/case_keyboard.jpg" alt="">
+          <div class="case-stripe" id="case-stripe">彩色边框为 AI 自动识别的瑕疵键帽 · 实时输出 OK / 待复核 / NG</div>
+          <div class="case-image-overlay">
+            <span data-i18n="case.viewDetail">查看详情</span>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
+          </div>
+        </a>
+        <div class="case-stats" id="case-stats">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+      <div class="case-more">
+        <a class="case-more-link" href="cases.html">
+          <span data-i18n="case.more">查看全部案例</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= ABOUT (Team + Heritage) ============ -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-eyebrow" data-i18n="about.eyebrow">About</div>
+      <h2 class="section-title" data-i18n="about.title"></h2>
+      <p class="section-lead" style="max-width: 940px; white-space: nowrap; overflow-x: auto;" data-i18n="about.lead"></p>
+
+      <!-- Heritage band — academic background of the founding team -->
+      <div class="heritage">
+        <div class="heritage-caption" data-i18n="heritage.caption">核心研发团队拥有全球顶尖学术背景</div>
+        <div class="heritage-row">
+          <a class="heritage-item" href="https://www.harvard.edu" target="_blank" rel="noopener">
+            <img src="assets/universities/harvard.svg" alt="Harvard">
+            <span class="heritage-name">Harvard</span>
+          </a>
+          <a class="heritage-item" href="https://www.mit.edu" target="_blank" rel="noopener">
+            <img src="assets/universities/mit.svg" alt="MIT">
+            <span class="heritage-name">MIT</span>
+          </a>
+          <a class="heritage-item" href="https://www.stanford.edu" target="_blank" rel="noopener">
+            <img src="assets/universities/stanford.svg" alt="Stanford">
+            <span class="heritage-name">Stanford</span>
+          </a>
+          <a class="heritage-item" href="https://www.upenn.edu" target="_blank" rel="noopener">
+            <img src="assets/universities/upenn.png" alt="UPenn">
+            <span class="heritage-name">UPenn</span>
+          </a>
+          <a class="heritage-item" href="https://www.princeton.edu" target="_blank" rel="noopener">
+            <img src="assets/universities/princeton.png" alt="Princeton">
+            <span class="heritage-name">Princeton</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="case-more" style="margin-top: 32px;">
+        <a class="case-more-link" href="about.html">
+          <span data-i18n="about.more">了解更多关于我们</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ CONTACT ============================= -->
+  <section class="section section-contact" id="contact">
+    <div class="container">
+      <div class="section-eyebrow" data-i18n="contact.eyebrow">Contact</div>
+      <h2 class="section-title" data-i18n="contact.title"></h2>
+
+      <div class="contact-grid">
+        <!-- LEFT: inquiry form — submitted to contact@/ming.xia@... by the server -->
+        <form class="contact-card contact-form" id="contact-form" novalidate>
+          <div class="form-grid-2">
+            <label class="form-field">
+              <span class="form-lbl" data-i18n="contact.f.name">姓名 *</span>
+              <input name="name" required autocomplete="name">
+            </label>
+            <label class="form-field">
+              <span class="form-lbl" data-i18n="contact.f.company">公司 / 单位</span>
+              <input name="company" autocomplete="organization">
+            </label>
+            <label class="form-field">
+              <span class="form-lbl" data-i18n="contact.f.email">邮箱 *</span>
+              <input type="email" name="email" required autocomplete="email">
+            </label>
+            <label class="form-field">
+              <span class="form-lbl" data-i18n="contact.f.phone">电话</span>
+              <input type="tel" name="phone" autocomplete="tel">
+            </label>
+          </div>
+          <label class="form-field">
+            <span class="form-lbl" data-i18n="contact.f.topic">关注方向</span>
+            <select name="topic">
+              <option value="aoi"          data-i18n="contact.f.topic.o1">产线 AOI 视觉检测</option>
+              <option value="vlm"          data-i18n="contact.f.topic.o2">大模型 / VLM 项目</option>
+              <option value="custom"       data-i18n="contact.f.topic.o3">非标定制方案</option>
+              <option value="partnership"  data-i18n="contact.f.topic.o4">合作 / 投资洽谈</option>
+              <option value="other"        data-i18n="contact.f.topic.o5">其他</option>
+            </select>
+          </label>
+          <label class="form-field">
+            <span class="form-lbl" data-i18n="contact.f.msg">需求描述 *</span>
+            <textarea name="message" rows="4" required data-i18n-placeholder="contact.f.msg.placeholder"></textarea>
+          </label>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary" id="contact-submit" data-i18n="contact.f.submit">提交咨询</button>
+            <span class="form-hint" id="contact-hint" data-i18n="contact.f.hint">提交后会直接发送到我们的邮箱,通常 24 小时内回复。</span>
+          </div>
+          <div class="form-status" id="contact-status" hidden></div>
+        </form>
+
+        <!-- RIGHT: technical-inquiry CTA card -->
+        <div class="contact-card contact-cta">
+          <div class="cta-eyebrow" data-i18n="contact.cta.eyebrow">技术咨询</div>
+          <h3 data-i18n="contact.cta.title"></h3>
+          <p data-i18n="contact.cta.body"></p>
+          <ul class="cta-list">
+            <li>
+              <svg class="cta-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+              <span data-i18n="contact.cta.l1">技术架构 / 算法选型</span>
+            </li>
+            <li>
+              <svg class="cta-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg>
+              <span data-i18n="contact.cta.l2">产线集成 / 部署方式</span>
+            </li>
+            <li>
+              <svg class="cta-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              <span data-i18n="contact.cta.l3">交付周期 / 价格区间</span>
+            </li>
+          </ul>
+          <button class="btn-light cta-btn" id="open-chat" data-i18n="contact.cta.btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== FOOTER ============================ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="#top">
+            <img src="assets/logo_mark.png" alt="LingQi" class="brand-logo">
+            <span class="brand-text">
+              <span class="brand-zh" data-i18n="brand.zh"></span>
+            </span>
+          </a>
+          <p data-i18n="footer.tagline"></p>
+        </div>
+        <div class="footer-col">
+          <h5 data-i18n="footer.col1.title">解决方案</h5>
+          <ul>
+            <li><a href="#solutions" data-i18n="sol.s1.title"></a></li>
+            <li><a href="#solutions" data-i18n="sol.s2.title"></a></li>
+            <li><a href="#solutions" data-i18n="sol.s3.title"></a></li>
+            <li><a href="#solutions" data-i18n="sol.s4.title"></a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5 data-i18n="footer.col2.title">关于我们</h5>
+          <ul>
+            <li><a href="about.html" data-i18n="footer.col2.l1">公司简介</a></li>
+            <li><a href="technology.html" data-i18n="footer.col2.l2">核心技术</a></li>
+            <li><a href="careers.html" data-i18n="footer.col2.l3">招贤纳士</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h5 data-i18n="footer.col3.title">联系方式</h5>
+          <ul class="footer-contact">
+            <li><a href="https://map.baidu.com/search/扬州市广陵区创业中心7-707" target="_blank" rel="noopener" data-i18n="footer.col3.addr1">江苏省扬州市广陵区</a></li>
+            <li><a href="https://map.baidu.com/search/扬州市广陵区创业中心7-707" target="_blank" rel="noopener" data-i18n="footer.col3.addr2">创业中心 7-707</a></li>
+            <li>+86 0514-85764459</li>
+            <li>+86 0514-85764366</li>
+            <li><a href="mailto:corporation@linqi.tech">corporation@linqi.tech</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span data-i18n="footer.copy">© 2026 扬州凌柒科技有限公司. All rights reserved.</span>
+        <div class="footer-bottom-links">
+          <a href="privacy.html" data-i18n="footer.privacy">隐私政策</a>
+          <a href="terms.html"   data-i18n="footer.terms">服务条款</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================= CHATBOT WIDGET ========================= -->
+  <button class="chat-fab" id="chat-fab" aria-label="Open chat">
+    <span class="chat-fab-icon">💬</span>
+    <span class="chat-fab-pulse" aria-hidden="true"></span>
+  </button>
+
+  <div class="chat-panel" id="chat-panel" aria-hidden="true">
+    <div class="chat-head">
+      <div class="chat-head-l">
+        <div class="chat-avatar"><img src="assets/logo_mark.png" alt="LingQi"></div>
+        <div>
+          <div class="chat-title" data-i18n="chat.title"></div>
+          <div class="chat-sub"><span class="online-dot"></span><span data-i18n="chat.online"></span></div>
+        </div>
+      </div>
+      <button class="chat-close" id="chat-close" aria-label="Close">×</button>
+    </div>
+    <div class="chat-body" id="chat-body" aria-live="polite"></div>
+    <form class="chat-input" id="chat-form" autocomplete="off">
+      <input type="text" id="chat-text" data-i18n-placeholder="chat.placeholder" />
+      <button type="submit" class="chat-send" data-i18n="chat.send" aria-label="Send"></button>
+    </form>
+  </div>
+
+  <script src="js/app.js" defer></script>
+</body>
+</html>

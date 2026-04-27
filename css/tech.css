@@ -1,0 +1,597 @@
+/* =========================================================================
+   Technology page — only the styles unique to /technology.html
+   (Reuses about-cta-card, etc. from styles.css + about.css)
+   ========================================================================= */
+
+.tech-hero {
+  padding: clamp(60px, 7vw, 100px) 0 clamp(20px, 3vw, 40px);
+  text-align: center;
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(21, 93, 252, 0.08), transparent 70%),
+    linear-gradient(180deg, var(--blue-pale), transparent 90%);
+}
+.tech-h1 {
+  font-size: clamp(34px, 4.5vw, 50px);
+  letter-spacing: -1.2px;
+  line-height: 1.12;
+  margin: 8px auto 18px;
+  max-width: 880px;
+}
+.tech-lead {
+  color: var(--text-body);
+  font-size: 16px;
+  line-height: 1.7;
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.nav-links a.active { color: var(--blue); font-weight: 600; }
+
+/* =========================================================================
+   NEURAL NETWORK DEMO — animated forward-pass visualization
+   ========================================================================= */
+.nn-demo { padding: clamp(40px, 5vw, 70px) 0; }
+
+/* =========================================================================
+   CNN-EXPLAINER REPLICA  (poloclub/cnn-explainer)
+   Tiny VGG: input(3) → 10×conv_1_1 → 10×relu_1_1 → 10×conv_1_2 → 10×relu_1_2
+   → 10×max_pool_1 → 10×conv_2_1 → 10×relu_2_1 → 10×conv_2_2 → 10×relu_2_2
+   → 10×max_pool_2 → 6 classes (PCB defect taxonomy)
+   ========================================================================= */
+.cnn-stage {
+  margin-top: 36px;
+  background: #fbfcfe;
+  border: 1px solid var(--bd);
+  border-radius: var(--radius-lg);
+  padding: 24px 18px 18px;
+  box-shadow: var(--shadow-sm);
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+.cnn-arch-meta {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  font-size: 11px;
+  color: var(--text-mute);
+  letter-spacing: 1px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.cnn-arch-tag {
+  display: inline-block;
+  padding: 3px 10px;
+  background: var(--blue);
+  color: #fff;
+  border-radius: 4px;
+  font-weight: 700;
+  letter-spacing: 1.4px;
+  font-size: 10px;
+}
+.cnn-arch-perf { color: var(--blue-deep, #0b48cc); font-weight: 600; }
+
+/* Horizontal scrolling layout — 12 columns: input + 10 hidden + output
+   Uniform column width + fixed-height headers ensure every map stack
+   starts at the same Y so rows visually align across layers. Maps of
+   varying sizes are centered within their fixed-width column. */
+.cnn-flow {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  min-width: max-content;
+  padding: 0 4px 4px;
+}
+
+.cnn-layer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;       /* center label + maps + scale strip */
+  flex: 0 0 auto;
+  width: 80px;               /* uniform width — wide enough for "(62, 62, 10)" */
+}
+
+/* Layer header (name + dimensions) — fixed height so every map stack
+   starts at the same vertical position across all columns */
+.cnn-layer-head {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  margin-bottom: 12px;
+  height: 36px;
+  text-align: center;
+  width: 100%;
+}
+.cnn-layer-tag {
+  font-size: 12px;
+  letter-spacing: .3px;
+  color: var(--text);
+  font-weight: 600;
+  white-space: nowrap;
+}
+.cnn-layer-shape {
+  font-size: 11px;
+  color: var(--text-mute);
+  letter-spacing: 0;
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+/* ---- INPUT (3 stacked RGB channels) ---- */
+.cnn-layer-input { width: 100px; }
+.cnn-input-channels-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: center;
+  justify-content: center;
+  min-height: 605px;             /* same tall area as hidden layers → vertically centered */
+}
+.cnn-input-ch {
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+.cnn-input-ch-canvas {
+  display: block;
+  width: 80px; height: 80px;
+  border: 1px solid rgba(15,23,42,.30);
+  border-radius: 2px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+.cnn-input-ch-lbl {
+  font-size: 11px;
+  font-style: italic;
+  letter-spacing: .2px;
+}
+
+/* ---- HIDDEN LAYERS — stack of 10 distinct feature maps ---- */
+/* min-height matches the tallest stack (conv_1_1: 10 × 56 + 9 × 5 = 605px)
+   so shorter stacks are vertically centered within the same area, giving
+   every layer's maps a common vertical mid-line ("center-aligned columns") */
+.cnn-maps {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 605px;
+}
+.cnn-map {
+  display: block;
+  border: 1px solid rgba(15, 23, 42, .22);
+  border-radius: 1.5px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Per-layer color-scale legend strip at the bottom */
+.cnn-scale {
+  margin-top: 10px;
+  width: 80%;
+  max-width: 60px;
+  height: 4px;
+  border-radius: 999px;
+  border: 1px solid rgba(15,23,42,.16);
+}
+
+/* ---- OUTPUT (6 PCB defect classes — full bar list, CNN Explainer style) ---- */
+.cnn-layer-output {
+  margin-left: 8px;
+  width: 170px;
+  align-items: center;
+}
+.cnn-layer-output .cnn-output-list { align-items: stretch; }
+.cnn-output-list {
+  list-style: none;
+  margin: 0; padding: 0;
+  display: flex; flex-direction: column; gap: 14px;
+  justify-content: center;
+  min-height: 605px;          /* match other columns so output list is vertically centered */
+  width: 100%;
+}
+.cnn-out-row {
+  display: flex; flex-direction: column; gap: 5px;
+  padding: 0;
+}
+.cnn-out-row .cnn-out-name {
+  font-size: 12px;
+  color: var(--text);
+  letter-spacing: .1px;
+  font-weight: 500;
+}
+.cnn-out-row[data-active="true"] .cnn-out-name {
+  color: var(--blue-deep, #0b48cc);
+  font-weight: 700;
+}
+.cnn-out-row .cnn-out-bar {
+  height: 6px;
+  background: rgba(15,23,42,.08);
+  border-radius: 999px;
+  overflow: hidden;
+  width: 100%;
+}
+.cnn-out-row .cnn-out-bar i {
+  display: block; height: 100%;
+  width: var(--w, 0%);
+  background: linear-gradient(90deg, #bfdbfe, #93c5fd);
+  border-radius: 999px;
+  transition: width 1.2s ease;
+}
+.cnn-out-row[data-active="true"] .cnn-out-bar i {
+  background: linear-gradient(90deg, #2b7fff, #0b48cc);
+  box-shadow: 0 0 0 1px rgba(21,93,252,.15) inset;
+}
+
+/* =========================================================================
+   FORWARD-PASS ANIMATION
+   8-second loop: input → conv_1_1 → ... → max_pool_2 → output, each layer
+   pulses bright and its label highlights as the wave-front passes through.
+   Output bars fill in at the very end. CSS variable --cnn-d controls the
+   per-layer delay so the wave appears to ripple left-to-right.
+   ========================================================================= */
+.cnn-layer-input             { --cnn-d: 0s;   }
+.cnn-layer[data-step="1"]    { --cnn-d: 1s;   }
+.cnn-layer[data-step="2"]    { --cnn-d: 2s;   }
+.cnn-layer[data-step="3"]    { --cnn-d: 3s;   }
+.cnn-layer[data-step="4"]    { --cnn-d: 4s;   }
+.cnn-layer[data-step="5"]    { --cnn-d: 5s;   }
+.cnn-layer[data-step="6"]    { --cnn-d: 6s;   }
+.cnn-layer[data-step="7"]    { --cnn-d: 7s;   }
+.cnn-layer[data-step="8"]    { --cnn-d: 8s;   }
+.cnn-layer[data-step="9"]    { --cnn-d: 9s;   }
+.cnn-layer[data-step="10"]   { --cnn-d: 10s;  }
+.cnn-layer-output            { --cnn-d: 11s;  }
+
+/* Layer container — subtle blue tint + soft glow when wave passes.
+   16-second cycle: 12-layer sweep over 0–11s + 5s rest before loop. */
+.cnn-layer {
+  border-radius: 8px;
+  padding: 6px 4px;
+  margin: -6px -4px;
+  animation: cnn-wave 16s ease-in-out var(--cnn-d, 0s) infinite;
+}
+@keyframes cnn-wave {
+  0%, 5% {
+    background: rgba(21, 93, 252, 0.08);
+    box-shadow: 0 0 22px rgba(21, 93, 252, 0.18) inset;
+  }
+  12%, 100% {
+    background: transparent;
+    box-shadow: none;
+  }
+}
+
+/* Layer name + dimensions: tag goes brand-blue + bold during pulse */
+.cnn-layer .cnn-layer-tag {
+  animation: cnn-tag-wave 16s ease-in-out var(--cnn-d, 0s) infinite;
+}
+@keyframes cnn-tag-wave {
+  0%, 5% {
+    color: var(--blue-deep, #0b48cc);
+    transform: translateY(-1px);
+  }
+  12%, 100% {
+    color: var(--text);
+    transform: translateY(0);
+  }
+}
+
+/* Feature maps shimmer brighter when their layer activates */
+.cnn-map, .cnn-input-ch-canvas {
+  animation: cnn-map-wave 16s ease-in-out var(--cnn-d, 0s) infinite;
+}
+@keyframes cnn-map-wave {
+  0%, 5% {
+    filter: brightness(1.18) saturate(1.25) drop-shadow(0 0 5px rgba(21, 93, 252, 0.35));
+    transform: scale(1.04);
+  }
+  12%, 100% {
+    filter: none;
+    transform: scale(1);
+  }
+}
+
+/* Output bars: animated fill at end of cycle */
+.cnn-out-row .cnn-out-bar i {
+  width: 0;
+  animation: cnn-bar-fill 16s ease-out var(--cnn-d, 11s) infinite;
+}
+@keyframes cnn-bar-fill {
+  0%, 3%      { width: 0; }
+  10%, 78%    { width: var(--w, 0%); opacity: 1; }
+  92%, 100%   { width: var(--w, 0%); opacity: 0.55; }
+}
+
+/* Active class name gets a stronger highlight at the moment of pulse */
+.cnn-out-row[data-active="true"] .cnn-out-name {
+  animation: cnn-out-active-wave 16s ease-in-out 11s infinite;
+}
+@keyframes cnn-out-active-wave {
+  0%, 4%   { transform: scale(1.05); letter-spacing: .8px; }
+  14%, 100% { transform: scale(1); letter-spacing: .1px; }
+}
+
+/* ---- Shared global RdBu color-map legend at the bottom of the stage ---- */
+.cnn-colormap-legend {
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--bd);
+  font-size: 10px;
+  color: var(--text-mute);
+}
+.cnn-cm-label {
+  letter-spacing: .8px;
+  margin-right: 6px;
+  color: var(--text);
+  font-weight: 600;
+}
+.cnn-cm-min, .cnn-cm-max, .cnn-cm-zero {
+  font-family: var(--font-mono);
+  color: var(--text);
+}
+.cnn-cm-bar {
+  display: inline-block;
+  width: 80px;
+  height: 8px;
+  border: 1px solid rgba(15,23,42,.25);
+  border-radius: 1px;
+}
+
+@media (max-width: 880px) {
+  .cnn-arch-meta { gap: 8px; font-size: 10px; }
+}
+
+/* === 3-tier matrix as horizontal stacked rows === */
+.tier-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 28px;
+}
+.tier-row {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 0;
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color .25s, transform .25s, box-shadow .25s;
+}
+.tier-row:hover {
+  border-color: var(--blue-border);
+  box-shadow: var(--shadow-md);
+}
+.tier-row.featured { border-color: var(--blue); box-shadow: 0 0 0 3px rgba(21, 93, 252, 0.08); }
+@media (max-width: 760px) { .tier-row { grid-template-columns: 1fr; } }
+
+.tier-row-tag {
+  background: linear-gradient(135deg, var(--bg-alt), #e7eef9);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+}
+.tier-row.featured .tier-row-tag {
+  background: linear-gradient(135deg, var(--blue), var(--blue-deep));
+  color: #fff;
+}
+.tier-row.tier-l3 .tier-row-tag {
+  background: linear-gradient(135deg, #15233f, var(--footer-bg));
+  color: #fff;
+}
+.tier-row-num {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -1px;
+  color: var(--blue);
+}
+.tier-row.featured .tier-row-num { color: #fff; }
+.tier-row.tier-l3  .tier-row-num { color: var(--gold); }
+
+.tier-row-name {
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -0.4px;
+}
+.tier-row.featured .tier-row-name { color: #fff; }
+.tier-row.tier-l3  .tier-row-name { color: #fff; }
+
+.tier-row-meta {
+  font-size: 11px;
+  letter-spacing: 1.2px;
+  color: var(--text-mute);
+}
+.tier-row.featured .tier-row-meta,
+.tier-row.tier-l3  .tier-row-meta { color: rgba(255,255,255,0.75); }
+
+.tier-row-body {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+@media (max-width: 760px) { .tier-row-body { grid-template-columns: 1fr; } }
+
+.tier-row-cell {
+  padding: 22px;
+  border-left: 1px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+@media (max-width: 760px) {
+  .tier-row-cell { border-left: none; border-top: 1px solid var(--bd); }
+}
+.tier-row-cell strong {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-mute);
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+}
+.tier-row-cell p {
+  font-size: 13.5px;
+  color: var(--text-body);
+  margin: 0;
+  line-height: 1.6;
+}
+.tier-row-cell p b { font-weight: 600; color: var(--text); }
+
+/* === 3-phase pipeline === */
+.phase-grid {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
+  gap: 12px;
+  align-items: stretch;
+  margin-top: 36px;
+}
+@media (max-width: 800px) {
+  .phase-grid { grid-template-columns: 1fr; }
+  .phase-arrow { transform: rotate(90deg); }
+}
+.phase-card {
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: border-color .25s, transform .25s;
+}
+.phase-card:hover { border-color: var(--blue-border); transform: translateY(-2px); }
+.phase-num {
+  font-family: var(--font-mono);
+  font-size: 26px;
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: -1px;
+}
+.phase-card h4 { font-size: 16px; }
+.phase-card p {
+  font-size: 13.5px;
+  color: var(--text-body);
+  margin: 0;
+  line-height: 1.65;
+}
+.phase-arrow {
+  align-self: center;
+  font-size: 28px;
+  color: var(--blue);
+  font-weight: 200;
+}
+
+/* === Tech moat (4 cards) === */
+.moat-grid {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+}
+.moat-card {
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  padding: 24px;
+  transition: all .25s;
+}
+.moat-card:hover {
+  border-color: var(--blue-border);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.moat-icon {
+  width: 44px; height: 44px;
+  border-radius: 10px;
+  background: var(--blue-pale);
+  color: var(--blue);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin-bottom: 14px;
+}
+.moat-card h3 { font-size: 16px; margin-bottom: 8px; }
+.moat-card p {
+  font-size: 13.5px;
+  color: var(--text-body);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* === Production metrics — 6 cards on one row at desktop === */
+.metric-grid {
+  margin-top: 36px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+@media (max-width: 900px) {
+  .metric-grid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 520px) {
+  .metric-grid { grid-template-columns: repeat(2, 1fr); }
+}
+.metric-card {
+  background: var(--card);
+  border: 1px solid var(--bd);
+  border-radius: var(--radius);
+  padding: 16px 10px;
+  text-align: center;
+  transition: all .25s;
+  min-width: 0;
+}
+.metric-card:hover { border-color: var(--blue-border); transform: translateY(-2px); }
+.metric-num {
+  font-family: var(--font-mono);
+  font-size: clamp(18px, 1.7vw, 22px);
+  font-weight: 700;
+  color: var(--blue);
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+  white-space: nowrap;
+}
+.metric-num .unit {
+  font-size: 0.62em;
+  color: var(--text-mute);
+  margin-left: 1px;
+}
+.metric-lbl {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-mute);
+  line-height: 1.4;
+}
+
+/* CTA strip — reuse about-cta-card from about.css if loaded.
+   Inline minimal version here so it works without about.css */
+.tech-cta-strip { padding-top: clamp(40px, 5vw, 70px); }
+.tech-cta-strip .about-cta-card {
+  background: linear-gradient(135deg, var(--blue), var(--blue-deep));
+  color: #fff;
+  border-radius: var(--radius-lg);
+  padding: clamp(36px, 5vw, 56px);
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+}
+.tech-cta-strip .about-cta-card::before {
+  content: ""; position: absolute;
+  top: -80px; right: -80px;
+  width: 280px; height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.16), transparent 70%);
+}
+.tech-cta-strip .about-cta-card h3 {
+  position: relative; color: #fff;
+  font-size: clamp(22px, 2.5vw, 28px);
+  letter-spacing: -0.5px;
+  margin-bottom: 10px;
+}
+.tech-cta-strip .about-cta-card p {
+  position: relative; color: rgba(255,255,255,0.88);
+  font-size: 15px; margin: 0 0 24px;
+}
+.tech-cta-strip .about-cta-actions {
+  position: relative; display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
+}
+.tech-cta-strip .btn-primary { background: #fff; color: var(--blue-deep); }
+.tech-cta-strip .btn-ghost { border-color: rgba(255,255,255,0.6); color: #fff; }
+.tech-cta-strip .btn-ghost:hover { border-color: #fff; background: rgba(255,255,255,0.10); color: #fff; }

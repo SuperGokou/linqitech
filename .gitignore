@@ -1,0 +1,34 @@
+# Dependencies
+node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data (submitted contact inquiries — keep out of git)
+data/inquiries.jsonl
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Claude Code workspace files
+.claude/
+CLAUDE.md
+AGENTS.md
+
+# Build output
+dist/
+build/
+
+# Local secrets (kept in repo for now since GitHub repo is private)
+# .env
+.env.local
