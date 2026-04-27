@@ -58,10 +58,10 @@
       <h2 class="section-title" data-i18n="nn.title">神经网络如何识别瑕疵</h2>
       <p class="section-lead" data-i18n="nn.lead">从输入像素到分类输出 — 一次完整的前向推理,只用 ~52 ms。</p>
 
-      <!-- CNN-Explainer-style visualization (replicates poloclub/cnn-explainer Tiny VGG) -->
+      <!-- Deep CNN visualization (forward-pass demo) -->
       <div class="cnn-stage" id="cnn-stage">
         <div class="cnn-arch-meta mono">
-          <span class="cnn-arch-tag">TINY VGG</span>
+          <span class="cnn-arch-tag">DEEP CNN</span>
           <span>Conv · ReLU · MaxPool ×2 · Softmax · 10 hidden layers</span>
           <span class="cnn-arch-perf">6.3 MB · ~52 ms / image</span>
         </div>
@@ -128,7 +128,7 @@
             <div class="cnn-scale"></div>
           </div>
 
-          <!-- OUTPUT — 6 PCB defect classes (matching MathWorks YOLOX defect taxonomy) -->
+          <!-- OUTPUT — 6 PCB defect classes -->
           <div class="cnn-layer cnn-layer-output">
             <div class="cnn-layer-head"><div class="cnn-layer-tag mono">output</div><div class="cnn-layer-shape mono">(6)</div></div>
             <ul class="cnn-output-list mono">
@@ -176,7 +176,7 @@
             </div>
             <div class="tier-row-cell">
               <strong data-i18n="tech.stack">技术栈</strong>
-              <p data-i18n="tech.l1.t">OpenCV · 模板匹配 · 阈值与形态学</p>
+              <p data-i18n="tech.l1.t">经典视觉算法 · 模板匹配 · 形态学处理</p>
             </div>
             <div class="tier-row-cell">
               <strong data-i18n="tech.cases">典型案例</strong>
@@ -198,7 +198,7 @@
             </div>
             <div class="tier-row-cell">
               <strong data-i18n="tech.stack">技术栈</strong>
-              <p data-i18n="tech.l2.t"><b>YOLOv8 + CNN + 金样像素对比</b></p>
+              <p data-i18n="tech.l2.t"><b>深度检测网络 + 分类网络 + 自研像素级对比</b></p>
             </div>
             <div class="tier-row-cell">
               <strong data-i18n="tech.cases">案例(已落地)</strong>
@@ -220,7 +220,7 @@
             </div>
             <div class="tier-row-cell">
               <strong data-i18n="tech.stack">技术栈</strong>
-              <p data-i18n="tech.l3.t">Qwen2.5-VL · MiniCPM-V + LoRA + RAG</p>
+              <p data-i18n="tech.l3.t">视觉大模型 · 领域微调 · 知识增强检索</p>
             </div>
             <div class="tier-row-cell">
               <strong data-i18n="tech.cases">典型案例</strong>
@@ -243,19 +243,19 @@
         <div class="phase-card">
           <div class="phase-num">01</div>
           <h4 data-i18n="tech.p1.t">图像定位</h4>
-          <p data-i18n="tech.p1.b">OpenCV 自适应阈值 → 形态学 → 透视校正 → 朝向自动判定。处理 8K×13K 大分辨率工业图像,~0.5s/张。</p>
+          <p data-i18n="tech.p1.b">自适应分割 → 形态学处理 → 透视校正 → 朝向自动判定。处理 8K×13K 大分辨率工业图像,~0.5s/张。</p>
         </div>
         <div class="phase-arrow">→</div>
         <div class="phase-card">
           <div class="phase-num">02</div>
           <h4 data-i18n="tech.p2.t">目标切割</h4>
-          <p data-i18n="tech.p2.b">YOLOv8 检测分割,关键部件 bbox 输出。mAP50 = 99.2%,单图 ~52ms (CPU)。</p>
+          <p data-i18n="tech.p2.b">深度检测分割模型,关键部件 bbox 输出。mAP50 = 99.2%,单图 ~52ms (CPU)。</p>
         </div>
         <div class="phase-arrow">→</div>
         <div class="phase-card">
           <div class="phase-num">03</div>
           <h4 data-i18n="tech.p3.t">缺陷判定</h4>
-          <p data-i18n="tech.p3.b">CNN 分类 + 金样对比 + OpenCV 黑点 + 高通异常 — 四路并行,任一触发即标 NG。</p>
+          <p data-i18n="tech.p3.b">深度分类 + 基准对比 + 经典异常检测 + 频域分析 — 四路并行,任一触发即标 NG。</p>
         </div>
       </div>
     </div>
@@ -271,12 +271,20 @@
         <article class="moat-card">
           <div class="moat-icon">⌬</div>
           <h3 data-i18n="tech.moat.m1.t">多路融合算法</h3>
-          <p data-i18n="tech.moat.m1.b">CNN + 金样 + OpenCV + 高通,四路并行,任一触发即标 NG。召回率 +18%,显著降低漏检。</p>
+          <p data-i18n="tech.moat.m1.b">深度学习 + 基准对比 + 经典视觉 + 频域分析,四路并行,任一触发即标 NG。召回率 +18%,显著降低漏检。</p>
         </article>
         <article class="moat-card">
-          <div class="moat-icon">⚡</div>
+          <div class="moat-icon">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="3" y="4" width="18" height="16" rx="2"/>
+              <path d="M3 9h18"/>
+              <circle cx="6.5"  cy="6.5" r=".7" fill="currentColor" stroke="none"/>
+              <circle cx="9"    cy="6.5" r=".7" fill="currentColor" stroke="none"/>
+              <circle cx="11.5" cy="6.5" r=".7" fill="currentColor" stroke="none"/>
+            </svg>
+          </div>
           <h3 data-i18n="tech.moat.m2.t">浏览器端推理</h3>
-          <p data-i18n="tech.moat.m2.b">ONNX Runtime Web 零服务端部署,数据不出厂、不上云。同时支持 GPU 服务器和边缘盒子。</p>
+          <p data-i18n="tech.moat.m2.b">自研浏览器推理引擎 · 零服务端部署,数据不出厂、不上云。同时支持 GPU 服务器和边缘盒子。</p>
         </article>
         <article class="moat-card">
           <div class="moat-icon">⊛</div>
@@ -285,8 +293,8 @@
         </article>
         <article class="moat-card">
           <div class="moat-icon">◈</div>
-          <h3 data-i18n="tech.moat.m4.t">金样对比体系</h3>
-          <p data-i18n="tech.moat.m4.b">部件 ID 识别 → 自动匹配金样 → 像素级差异检测,微小瑕疵召回率显著提升。</p>
+          <h3 data-i18n="tech.moat.m4.t">基准对比体系</h3>
+          <p data-i18n="tech.moat.m4.b">部件 ID 识别 → 自动匹配基准模板 → 像素级差异检测,微小瑕疵召回率显著提升。</p>
         </article>
       </div>
     </div>

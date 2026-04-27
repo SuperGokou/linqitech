@@ -166,8 +166,8 @@
       <!-- YOLOX PCB defect detection animation — Input → Pipeline → Output -->
       <div class="yolox-detect">
         <div class="yolox-head">
-          <span class="yolox-tag mono">YOLOX · PCB DEFECT DETECTION</span>
-          <span class="yolox-meta mono" data-i18n="yolox.meta">参考 MathWorks Deep Learning Toolbox · 6 类缺陷</span>
+          <span class="yolox-tag mono">AI PCB DEFECT DETECTION</span>
+          <span class="yolox-meta mono" data-i18n="yolox.meta">工业级深度检测 · 6 类缺陷</span>
         </div>
 
         <div class="yolox-stage">
@@ -193,25 +193,25 @@
               <li class="yolox-st" style="--d:0s">
                 <span class="yolox-st-dot"></span>
                 <span class="yolox-st-name" data-i18n="yolox.s1.t">Backbone</span>
-                <span class="yolox-st-sub mono">CSPDarknet</span>
+                <span class="yolox-st-sub mono">特征主干</span>
                 <span class="yolox-st-bar"></span>
               </li>
               <li class="yolox-st" style="--d:.4s">
                 <span class="yolox-st-dot"></span>
                 <span class="yolox-st-name" data-i18n="yolox.s2.t">Neck</span>
-                <span class="yolox-st-sub mono">FPN · PAN</span>
+                <span class="yolox-st-sub mono">多尺度融合</span>
                 <span class="yolox-st-bar"></span>
               </li>
               <li class="yolox-st" style="--d:.8s">
                 <span class="yolox-st-dot"></span>
                 <span class="yolox-st-name" data-i18n="yolox.s3.t">Head</span>
-                <span class="yolox-st-sub mono">Decoupled</span>
+                <span class="yolox-st-sub mono">检测解码</span>
                 <span class="yolox-st-bar"></span>
               </li>
               <li class="yolox-st" style="--d:1.2s">
                 <span class="yolox-st-dot"></span>
                 <span class="yolox-st-name" data-i18n="yolox.s4.t">NMS</span>
-                <span class="yolox-st-sub mono">IoU ≤ 0.5</span>
+                <span class="yolox-st-sub mono">后处理</span>
                 <span class="yolox-st-bar"></span>
               </li>
             </ul>

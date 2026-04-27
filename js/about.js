@@ -13,7 +13,7 @@
 
       "ab.mission.eyebrow": "// Mission",
       "ab.mission.title":   "用视觉 AI 替代千百次人眼,重塑制造业质检",
-      "ab.mission.body":    "凌柒科技专注于工业 AI 深度学习与机器视觉技术。我们以哈佛、宾大背景的算法团队为核心,把视觉感知能力交付给中国制造企业 — 从经典 OpenCV 到大模型 RAG,全栈方案,让 AOI 检测从规则迈向认知。",
+      "ab.mission.body":    "凌柒科技专注于工业 AI 深度学习与机器视觉技术。我们以哈佛、宾大背景的算法团队为核心,把视觉感知能力交付给中国制造企业 — 从经典视觉算法到视觉大模型,全栈方案,让 AOI 检测从规则迈向认知。",
       "ab.mission.body2":   "视觉感知是未来 10 年最大的技术红利。AI / 人形机器人时代正在到来 — 我们用工业 AOI 沉淀的感知能力,自然延伸到机器人视觉。",
 
       "ab.pulse.eyebrow":   "// vision_2030",
@@ -35,7 +35,7 @@
       "ab.tl.eyebrow":      "// Timeline",
       "ab.tl.title":        "公司里程碑",
       "ab.tl.m1.t":         "技术原型与首个 POC",
-      "ab.tl.m1.b":         "基于 YOLOv8 + CNN + 金样匹配的多路视觉融合算法成型,某头部消费电子代工厂键盘产线 POC 完成,准确率 97.5%。",
+      "ab.tl.m1.b":         "自研多路视觉融合算法成型,某头部消费电子代工厂键盘产线 POC 完成,准确率 97.5%。",
       "ab.tl.m2.t":         "扬州凌柒科技正式成立",
       "ab.tl.m2.b":         "在扬州市广陵区注册成立 · 申请人才引进与绿扬金凤计划 · 建立首批办公与实验场地。",
       "ab.tl.m3.t":         "首批本地客户 + 团队组建",
@@ -67,7 +67,7 @@
 
       "ab.mission.eyebrow": "// Mission",
       "ab.mission.title":   "Replace thousands of human eye-checks with one AI eye",
-      "ab.mission.body":    "LingQi is a Harvard / UPenn-rooted vision AI team. We bring visual perception to Chinese manufacturers — from classical OpenCV to vision-language models — moving AOI from rule-based to cognitive.",
+      "ab.mission.body":    "LingQi is a Harvard / UPenn-rooted vision AI team. We bring visual perception to Chinese manufacturers — from classical CV to vision-language models — moving AOI from rule-based to cognitive.",
       "ab.mission.body2":   "Visual perception is the biggest technology dividend of the next decade. As humanoid robots arrive, our industrial vision stack extends naturally into robot perception.",
 
       "ab.pulse.eyebrow":   "// vision_2030",
@@ -89,7 +89,7 @@
       "ab.tl.eyebrow":      "// Timeline",
       "ab.tl.title":        "Company Milestones",
       "ab.tl.m1.t":         "First Prototype & POC",
-      "ab.tl.m1.b":         "Multi-route fusion algorithm (YOLOv8 + CNN + golden-sample) shipped; POC at a top-tier consumer electronics OEM keyboard line achieved 97.5% accuracy.",
+      "ab.tl.m1.b":         "In-house multi-route vision fusion algorithm shipped; POC at a top-tier consumer electronics OEM keyboard line achieved 97.5% accuracy.",
       "ab.tl.m2.t":         "LingQi Tech Founded in Yangzhou",
       "ab.tl.m2.b":         "Registered in Guangling, Yangzhou · applying to talent-introduction and Green-Phoenix programs · setting up office + lab space.",
       "ab.tl.m3.t":         "First Local Customers + Team Buildout",

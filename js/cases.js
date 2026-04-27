@@ -34,7 +34,7 @@
 
       "cases.c3.title":  "Noval AI · 制造业智能工艺生成",
       "cases.c3.client": "类型:平台产品  ·  状态:原型上线",
-      "cases.c3.body":   "基于 Qwen2.5-VL 视觉大模型 + LoRA 微调,自动分析产品图像并生成完整工艺流程文档。端到端:图像上传 → 视觉理解 → 工艺生成 → PDF 报告。",
+      "cases.c3.body":   "基于视觉大模型 + 领域微调,自动分析产品图像并生成完整工艺流程文档。端到端:图像上传 → 视觉理解 → 工艺生成 → PDF 报告。",
       "cases.c3.s1":     "资源节省",
       "cases.c3.s2":     "零件类型",
       "cases.c3.s3":     "工艺报告",
@@ -94,7 +94,7 @@
 
       "cases.c3.title":  "Noval AI · Manufacturing Process Generation",
       "cases.c3.client": "Type: platform product  ·  Status: prototype live",
-      "cases.c3.body":   "Qwen2.5-VL vision-language model + LoRA fine-tuning, automatically analyzing product images and generating full process documentation. End-to-end: upload → understand → generate → PDF report.",
+      "cases.c3.body":   "Vision-language model + domain fine-tuning automatically analyzes product images and generates full process documentation. End-to-end: upload → understand → generate → PDF report.",
       "cases.c3.s1":     "Resource Saved",
       "cases.c3.s2":     "Part Types",
       "cases.c3.s3":     "Process Report",

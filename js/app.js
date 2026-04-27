@@ -79,8 +79,8 @@ const I18N = {
     "cap.c4.title":     "系统级安全稳定",
     "cap.c4.body":      "工业级软件架构设计,支持 7×24 小时不间断运行,严格保障生产数据本地化安全。",
 
-    // YOLOX PCB demo
-    "yolox.meta":       "参考 MathWorks Deep Learning Toolbox · 6 类 PCB 缺陷",
+    // PCB defect-detection demo
+    "yolox.meta":       "工业级深度检测 · 6 类 PCB 缺陷",
     "yolox.input":      "INPUT",
     "yolox.output":     "OUTPUT",
     "yolox.detected":   "检出",
@@ -239,7 +239,7 @@ const I18N = {
     "cap.c4.title":     "Mission-grade Reliability",
     "cap.c4.body":      "Industrial software architecture designed for 7×24 uninterrupted operation; production data stays on-prem.",
 
-    "yolox.meta":       "Ref: MathWorks Deep Learning Toolbox · 6 PCB defect classes",
+    "yolox.meta":       "Industrial deep-detection · 6 PCB defect classes",
     "yolox.input":      "INPUT",
     "yolox.output":     "OUTPUT",
     "yolox.detected":   "Detected",
@@ -406,7 +406,7 @@ const CASE_DATA = {
     badge: "Noval AI · BETA",
     img:   "assets/figma/sol_ocr.jpg",  // placeholder
     useSvg: true,
-    caption: "Qwen2.5-VL + LoRA · 图像 → 视觉理解 → 工艺文档 → PDF 报告",
+    caption: "视觉大模型 + 领域微调 · 图像 → 视觉理解 → 工艺文档 → PDF 报告",
     stats: [
       { v: "~90",   u: "%",   l: "资源节省" },
       { v: "11",    u: "类",  l: "零件类型" },
