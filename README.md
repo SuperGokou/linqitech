@@ -12,12 +12,15 @@ computer-vision company that ships automated optical inspection (AOI)
 systems for electronics, automotive, appliance, and medical-device
 manufacturing lines.
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-supergokou.github.io%2Flinqitech-2b7fff?logo=github&logoColor=white)](https://supergokou.github.io/linqitech/)
 [![Node](https://img.shields.io/badge/Node.js-18%2B-43853d?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![Express](https://img.shields.io/badge/Express-4.21-000000?logo=express&logoColor=white)](https://expressjs.com/)
 [![DeepSeek](https://img.shields.io/badge/AI-DeepSeek--chat-4d6bff?logo=openai&logoColor=white)](https://deepseek.com/)
 [![i18n](https://img.shields.io/badge/i18n-中文%20%2F%20English-2b7fff)](#)
 [![Deploy](https://img.shields.io/badge/Deploy-GitHub%20Pages-blueviolet?logo=github&logoColor=white)](#deployment)
 [![License](https://img.shields.io/badge/License-Proprietary-red)](#license)
+
+### **[→ Open the live site](https://supergokou.github.io/linqitech/)**
 
 </div>
 
@@ -140,10 +143,10 @@ canned bilingual replies instead of failing — useful for offline demos.
 
 ## Deployment
 
-### Option A · GitHub Pages (static only)
+### Option A · GitHub Pages (static only) — **live at [supergokou.github.io/linqitech](https://supergokou.github.io/linqitech/)**
 
 Settings → Pages → Source = **`main` branch / root**.
-Pages will serve `index.html` and friends straight from the repo. The
+Pages serves `index.html` and friends straight from the repo. The
 chatbot and contact-form endpoints require the Express server, so for a
 fully-functional preview pair Pages with Option B for the backend.
 
