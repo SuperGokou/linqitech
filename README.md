@@ -1,8 +1,6 @@
 <div align="center">
 
-<img src="assets/logo_full.png" alt="LingQi Technology" width="240" />
-
-# 扬州凌柒科技 · LingQi Technology
+<img src="assets/logo_full.png" alt="LingQi Technology" width="320" />
 
 **Industrial Visual-AI Platform · From Classical CV to LLMs**
 
