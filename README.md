@@ -16,36 +16,29 @@ manufacturing lines.
 [![Express](https://img.shields.io/badge/Express-4.21-000000?logo=express&logoColor=white)](https://expressjs.com/)
 [![DeepSeek](https://img.shields.io/badge/AI-DeepSeek--chat-4d6bff?logo=openai&logoColor=white)](https://deepseek.com/)
 [![i18n](https://img.shields.io/badge/i18n-中文%20%2F%20English-2b7fff)](#)
-[![Deploy](https://img.shields.io/badge/Deploy-GitHub%20Pages-blueviolet?logo=github&logoColor=white)](#-deployment)
-[![License](https://img.shields.io/badge/License-Proprietary-red)](#-license)
-
-[功能特性](#-features) ·
-[快速开始](#-quick-start) ·
-[项目结构](#-project-structure) ·
-[架构](#-architecture) ·
-[部署](#-deployment) ·
-[联系](#-contact)
+[![Deploy](https://img.shields.io/badge/Deploy-GitHub%20Pages-blueviolet?logo=github&logoColor=white)](#deployment)
+[![License](https://img.shields.io/badge/License-Proprietary-red)](#license)
 
 </div>
 
 ---
 
-## ✨ Features
+## Features
 
-| | Capability | Notes |
-| --- | --- | --- |
-| 🌐 | **Bilingual UI** | Live `中 ⇄ EN` toggle on every page, persisted via `data-lang` |
-| 🤖 | **DeepSeek customer-service bot** | Server-side proxy with a strict company-fact-only system prompt |
-| 📨 | **Contact-form pipeline** | Logs submissions to JSONL + optional SMTP email out |
-| 🔬 | **Tiny VGG CNN visualizer** | Real forward-pass on the input image — 10 hidden layers, RdBu colormap, animated wave + connection lines (inspired by [poloclub/cnn-explainer](https://poloclub.github.io/cnn-explainer/)) |
-| 🛠 | **YOLOX defect-detection demo** | Animated input → pipeline → output panel with bounding-box reveal |
-| 🖼 | **PCB / IC-die scan demo** | Hero "LQ-Vision" widget with synthesised defect overlays |
-| 📐 | **No build step** | Vanilla HTML / CSS / JS — open `index.html` and it just works |
-| 📊 | **GitHub Pages ready** | Every static file at the repo root, no Webpack / Vite required |
+| Capability | Notes |
+| --- | --- |
+| **Bilingual UI** | Live `中 ⇄ EN` toggle on every page, persisted via `data-lang` |
+| **DeepSeek customer-service bot** | Server-side proxy with a strict company-fact-only system prompt |
+| **Contact-form pipeline** | Logs submissions to JSONL + optional SMTP email out |
+| **Deep-CNN visualizer** | Real forward-pass on the input image — 10 hidden layers, RdBu colormap, animated wave + connection lines |
+| **AI PCB defect-detection demo** | Animated input → pipeline → output panel with bounding-box reveal |
+| **PCB / IC-die scan demo** | Hero "LQ-Vision" widget with synthesised defect overlays |
+| **No build step** | Vanilla HTML / CSS / JS — open `index.html` and it just works |
+| **GitHub Pages ready** | Every static file at the repo root, no Webpack / Vite required |
 
 ---
 
-## 🚀 Quick start
+## Quick start
 
 ```sh
 # 1. Install dependencies
@@ -78,7 +71,7 @@ and appends them to `data/inquiries.jsonl` for manual review.
 
 ---
 
-## 🗂 Project structure
+## Project structure
 
 ```
 linqitech/
@@ -118,110 +111,34 @@ linqitech/
 
 ---
 
-## 🧭 Site map
+## Pages
 
-```mermaid
-graph LR
-  Home["🏠 index.html<br/>Hero · Scan Demo · Capabilities"]
-  Tech["⚙️ technology.html<br/>CNN Demo · Tiers · Pipeline"]
-  Cases["🗂 cases.html<br/>Filterable case studies"]
-  About["🏢 about.html<br/>Mission · Vision · Heritage"]
-  Careers["💼 careers.html<br/>Roles · Perks"]
-  Privacy["📜 privacy.html"]
-  Terms["📜 terms.html"]
-
-  Home --> Tech
-  Home --> Cases
-  Home --> About
-  Home --> Careers
-  Home -. footer .-> Privacy
-  Home -. footer .-> Terms
-```
+| Page | URL | What's there |
+| --- | --- | --- |
+| Home | `/` | Hero, LQ-Vision scan demo, capabilities, tech-stack marquee, solutions, case study tabs, contact form |
+| Technology | `/technology.html` | Deep-CNN forward-pass visualizer, 3-tier solution matrix, universal pipeline, differentiation, production metrics |
+| Cases | `/cases.html` | Filterable case-study grid with category pills + anchor links |
+| About | `/about.html` | Mission, vision_2030, values, timeline, academic heritage band |
+| Careers | `/careers.html` | Open roles, perks, self-application CTA |
+| Privacy | `/privacy.html` | Privacy policy with TL;DR section |
+| Terms | `/terms.html` | Terms of service |
 
 ---
 
-## 🏗 Architecture
-
-```mermaid
-flowchart LR
-  subgraph Client["🌐 Browser"]
-    UI[Static HTML / CSS / JS]
-    Chat[💬 Chat widget]
-    Form[📨 Contact form]
-  end
-
-  subgraph Server["🖥 Express (server.js)"]
-    Static["express.static(__dirname)"]
-    ApiChat["POST /api/chat"]
-    ApiContact["POST /api/contact"]
-  end
-
-  subgraph External["☁️ External services"]
-    DS["DeepSeek<br/>deepseek-chat"]
-    SMTP["SMTP relay<br/>(optional)"]
-  end
-
-  Disk[("📁 data/inquiries.jsonl")]
-
-  UI -- HTML / CSS / JS --> Static
-  Chat -- "messages[]" --> ApiChat -- HTTPS --> DS
-  Form -- "name + email + msg" --> ApiContact
-  ApiContact -- append --> Disk
-  ApiContact -- "if SMTP_HOST" --> SMTP
-```
-
----
-
-## 🧠 CNN Explainer demo (`technology.html`)
-
-A real Tiny VGG forward-pass runs in the browser on the PCB demo image
-— no model is loaded, but every map is computed by actual 3 × 3
-convolutions, ReLU, and 2 × 2 max-pool ops, then rendered with the
-matplotlib **RdBu_r** divergent colormap.
-
-```mermaid
-flowchart LR
-  In["🟦 input<br/>(64,64,3)"] --> C11["conv_1_1<br/>(62,62,10)"]
-  C11 --> R11["relu_1_1"]
-  R11 --> C12["conv_1_2<br/>(60,60,10)"]
-  C12 --> R12["relu_1_2"]
-  R12 --> P1["max_pool_1<br/>(30,30,10)"]
-  P1  --> C21["conv_2_1<br/>(28,28,10)"]
-  C21 --> R21["relu_2_1"]
-  R21 --> C22["conv_2_2<br/>(26,26,10)"]
-  C22 --> R22["relu_2_2"]
-  R22 --> P2["max_pool_2<br/>(13,13,10)"]
-  P2  --> Out["softmax<br/>6 PCB defect classes"]
-```
-
-Visual features replicated from
-[poloclub/cnn-explainer](https://poloclub.github.io/cnn-explainer):
-
-- 3 separated R / G / B input channels
-- 10 feature maps per hidden layer (procedurally diverse 3×3 kernels)
-- Layer name + dimension `(H, W, D)` above every column
-- Per-layer color-scale strip + global activation legend
-- Forward-pass wave animation (16-second loop) — each layer pulses,
-  its label highlights blue, output bars fill at the end
-- ~480 SVG bezier connection lines, dense at small layers
-  (3 → 10, 10 → 6) and 5-neighbour at the 10 → 10 stages
-
----
-
-## 🔌 API reference
+## API reference
 
 | Method | Path | Purpose |
 | --- | --- | --- |
 | `GET`  | `/`               | Static `index.html` (and any other route ending in `.html`) |
 | `POST` | `/api/chat`       | Forwards `{ messages: [...] }` to DeepSeek with the company system prompt |
-| `POST` | `/api/contact`    | `{ name, email, company, phone, topic, message }` → JSONL + email |
+| `POST` | `/api/contact`    | `{ name, email, company, phone, topic, message }` → JSONL + optional email |
 
 Mock-mode behaviour: if `DEEPSEEK_API_KEY` is unset, `/api/chat` returns
 canned bilingual replies instead of failing — useful for offline demos.
 
 ---
 
-## 🚢 Deployment
+## Deployment
 
 ### Option A · GitHub Pages (static only)
 
@@ -243,7 +160,7 @@ trivial.
 
 ---
 
-## 🛠 Tech stack
+## Tech stack
 
 <table>
 <tr>
@@ -266,7 +183,7 @@ trivial.
 
 ---
 
-## 📞 Contact
+## Contact
 
 - **公司 / Company** — 扬州凌柒科技有限公司 (Yangzhou LingQi Technology Co., Ltd.)
 - **地址 / Address** — 江苏省扬州市广陵区创业中心 7-707
@@ -275,7 +192,7 @@ trivial.
 
 ---
 
-## 📄 License
+## License
 
 © 2026 扬州凌柒科技有限公司 · All rights reserved. Proprietary —
 this repository is hosted privately and is not licensed for
